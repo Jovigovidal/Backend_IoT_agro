@@ -4,78 +4,142 @@ namespace App\Http\Controllers;
 
 use App\Models\Medicion;
 use App\Models\Configuracion;
+use App\Models\MedicionLive; 
 use Illuminate\Http\Request;
-use Carbon\Carbon; // Necesario para la hora
+use Carbon\Carbon; 
+use Illuminate\Support\Facades\Log;
 
 class MedicionController extends Controller
 {
-    // Obtener últimos datos para la web
-    public function index()
+    // 1. Obtener Historial
+    public function index(Request $request)
     {
-        return Medicion::orderBy('created_at', 'desc')->take(10)->get();
+        $query = Medicion::orderBy('created_at', 'desc');
+
+        if ($request->has('inicio') && $request->inicio) {
+            $query->whereDate('created_at', '>=', $request->inicio);
+        }
+        if ($request->has('fin') && $request->fin) {
+            $query->whereDate('created_at', '<=', $request->fin);
+        }
+
+        $limite = ($request->has('inicio') || $request->has('fin')) ? 300 : 50;
+        return $query->take($limite)->get();
     }
 
-    // Recibir datos del ESP32
-    public function store(Request $request)
-    {
-        // =========================================================
-        // 1. FILTRO DE HORARIO (Igual que tu Google Sheets)
-        // =========================================================
+    // 2. Obtener Estado Actual (Para las tarjetas en Angular)
+    public function getEstado() {
+        return Configuracion::firstOrCreate([], ['modo' => 'AUTO']);
+    }
+
+    // 3. Guardar Configuración (Desde los botones de ANGULAR)
+    public function configurar(Request $request) {
+        $config = Configuracion::firstOrCreate([], ['modo' => 'AUTO']);
+
+        // A. Guardar MODO
+        if($request->has('modo')) $config->modo = $request->modo;
         
-        $ahora = Carbon::now(); // Hora del servidor (Perú)
-        
-        // Las horas permitidas
-        $horasPermitidas = [1, 5, 12, 16, 20]; 
-
-        $guardarNuevo = false;
-
-        // CONDICIÓN: ¿Es la hora correcta? Y ¿Es el minuto 0?
-        if (in_array($ahora->hour, $horasPermitidas) && $ahora->minute == 0) {
-            
-            // ANTI-DUPLICADOS:
-            // Como el ESP32 manda cada 10s, llegarán 6 datos en el minuto 0.
-            // Verificamos si YA guardamos un dato en esta hora hoy.
-            $yaGuardado = Medicion::whereDate('created_at', $ahora->toDateString())
-                                  ->whereHour('created_at', $ahora->hour)
-                                  ->exists();
-
-            if (!$yaGuardado) {
-                $guardarNuevo = true;
+        // B. Guardar RELÉS (1 al 4)
+        foreach([1, 2, 3, 4] as $i) {
+            if($request->has("relay{$i}_status")) {
+                $config->{"relay{$i}_status"} = filter_var($request->{"relay{$i}_status"}, FILTER_VALIDATE_BOOLEAN);
+            }
+            if($request->has("relay{$i}_enabled")) {
+                $config->{"relay{$i}_enabled"} = filter_var($request->{"relay{$i}_enabled"}, FILTER_VALIDATE_BOOLEAN);
             }
         }
 
-        // SOLO GUARDAMOS SI SE CUMPLE EL FILTRO
-        if ($guardarNuevo) {
-            $medicion = new Medicion();
-            $medicion->temperatura = $request->input('temperatura', 0);
-            $medicion->humedad = $request->input('humedad', 0);
-            $medicion->presion = $request->input('presion', 0);
-            $medicion->save();
+        // C. GUARDAR VENTILADOR (NUEVO) 💨
+        // Angular envía true/false en 'fan_status'. Lo convertimos a 255/0.
+        if($request->has('fan_status')) {
+            $estado = filter_var($request->fan_status, FILTER_VALIDATE_BOOLEAN);
+            $config->fan_speed = $estado ? 255 : 0;
         }
-
-        // =========================================================
-        // 2. LÓGICA DE CONTROL (ESTO SIEMPRE SE EJECUTA)
-        // =========================================================
-        // Aunque no guardemos el dato, SIEMPRE respondemos al ESP32
-        // con el estado de los botones. Así el control manual es rápido.
         
-        $config = Configuracion::first();
+        $config->save();
+        return response()->json(['status' => 'ok', 'config' => $config]);
+    }
 
-        // Crear config por defecto si no existe
-        if (!$config) {
-            $config = Configuracion::create([
-                'modo' => 'AUTO', 'relay1_status' => 0, 'relay2_status' => 0
-            ]);
+    // 4. Comunicación con ESP32 (EL NÚCLEO DEL SISTEMA)
+    public function store(Request $request)
+    {
+        // A. MAPEO DE DATOS 🗺️
+        $datos = [
+            'temperatura' => $request->input('temp_aire', 0),
+            'humedad'     => $request->input('hum_aire', 0),
+            'presion'     => $request->input('presion', 0),
+            'temp_agua'   => $request->input('temp_agua', 0),
+            'ph'          => $request->input('ph', 0),
+            'tds'         => $request->input('tds', 0),
+            // Si quieres guardar la temp de la caja en el historial, agrégalo aquí
+            // 'caja_temp'   => $request->input('box_temp', 0), 
+        ];
+
+        // B. GUARDAR EN TIEMPO REAL
+        MedicionLive::create($datos);
+
+        // C. LIMPIEZA AUTOMÁTICA
+        $cantidad = MedicionLive::count();
+        if ($cantidad > 100) {
+            $sobrantes = $cantidad - 100;
+            MedicionLive::orderBy('id', 'asc')->limit($sobrantes)->delete();
         }
 
+        // D. GUARDAR EN HISTORIAL PERMANENTE
+        $ahora = Carbon::now(); 
+        $horasPermitidas = [1, 5, 12, 16, 20]; 
+        $historialGuardado = false;
+
+        if (in_array($ahora->hour, $horasPermitidas)) {
+            $yaGuardado = Medicion::whereDate('created_at', $ahora->toDateString())
+                                  ->whereHour('created_at', $ahora->hour)
+                                  ->exists();     
+            if (!$yaGuardado) {
+                Medicion::create($datos);
+                $historialGuardado = true;
+                Log::info('💾 Historial guardado: ' . $ahora->format('H:i:s'));
+            }
+        }
+
+        // E. ACTUALIZAR CONFIGURACIÓN (PANTALLA HOME)
+        $config = Configuracion::firstOrCreate([], ['modo' => 'AUTO']);
+        
+        $config->last_temp      = $datos['temperatura'];
+        $config->last_hum       = $datos['humedad'];
+        $config->last_pres      = $datos['presion'];
+        $config->last_temp_agua = $datos['temp_agua'];
+        $config->last_ph        = $datos['ph'];
+        $config->last_tds       = $datos['tds'];
+        
+        $config->last_box_temp  = $request->input('box_temp', 0);
+        $config->last_box_hum   = $request->input('box_hum', 0);
+        
+        // (OPCIONAL) Si agregas columnas a la tabla configuracions para ver esto en el dashboard:
+        // $config->last_box_temp = $request->input('box_temp', 0);
+        
+        $config->last_connection = now();
+        $config->save();
+
+        // F. RESPONDER AL ESP32 (AQUÍ ENVIAMOS LA ORDEN) 📡
         return response()->json([
             'status' => 'ok',
-            'guardado' => $guardarNuevo ? 'SI' : 'NO', // Para ver en Monitor Serie
-            'modo' => $config->modo,
-            'r1' => $config->relay1_status,
-            'r2' => $config->relay2_status,
-            'r1_en' => $config->relay1_enabled,
-            'r2_en' => $config->relay2_enabled
-        ], 200);
+            'guardado_historial' => $historialGuardado ? 'SI' : 'NO',
+            
+            // Datos de Control
+            'modo'    => $config->modo,
+            'fan_cmd' => (int)$config->fan_speed, // <--- ESTO LEE EL ESP32 (0 o 255)
+            
+            // Relés
+            'r1'      => (bool)$config->relay1_status,
+            'r2'      => (bool)$config->relay2_status,
+            'r3'      => (bool)$config->relay3_status,
+            'r4'      => (bool)$config->relay4_status,
+            
+            // Habilitaciones
+            'r1_en'   => (bool)$config->relay1_enabled,
+            'r2_en'   => (bool)$config->relay2_enabled,
+            'r3_en'   => (bool)$config->relay3_enabled,
+            'r4_en'   => (bool)$config->relay4_enabled
+        ]);
     }
 }

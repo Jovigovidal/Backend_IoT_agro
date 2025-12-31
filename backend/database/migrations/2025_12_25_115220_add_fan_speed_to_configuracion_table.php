@@ -9,19 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
 {
+    // CAMBIA 'configuraciones' POR 'configuracions'
     Schema::table('configuracions', function (Blueprint $table) {
-        // Por defecto en true (Habilitados)
-        $table->boolean('relay1_enabled')->default(true); 
-        $table->boolean('relay2_enabled')->default(true);
+        $table->integer('fan_speed')->default(0); 
     });
 }
 
-public function down(): void
+public function down()
 {
     Schema::table('configuracions', function (Blueprint $table) {
-        $table->dropColumn(['relay1_enabled', 'relay2_enabled']);
+        $table->dropColumn('fan_speed');
     });
 }
 };
+    

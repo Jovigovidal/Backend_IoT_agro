@@ -2,28 +2,29 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MedicionController;
+use App\Http\Controllers\AcuarioController;
+use App\Http\Controllers\BitacoraController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-Route::get('/mediciones', [MedicionController::class, 'index']);
-Route::post('/mediciones', [MedicionController::class, 'store']);
-Route::post('/configurar', function (Request $request) {
-    $config = App\Models\Configuracion::first();
-    $config->modo = $request->modo;
-    $config->relay1_status = $request->relay1_status;
-    $config->relay2_status = $request->relay2_status;
+// =============================================================
+// RUTAS ACUARIO IOT
+// =============================================================
 
-if($request->has('relay1_enabled')) $config->relay1_enabled = $request->relay1_enabled;
-if($request->has('relay2_enabled')) $config->relay2_enabled = $request->relay2_enabled;
+// 1. HISTORIAL (GET) - Para tu Tabla y Gráficos en Angular
+// Angular: this.http.get('/api/mediciones')
+Route::get('/mediciones', [AcuarioController::class, 'index']);
 
-    $config->save();
-    return response()->json(['msg' => 'Config actualizada']);
-});
+// 2. ESP32 (POST) - El cerebro
+// ESP32: http.POST('/api/mediciones', json)
+Route::post('/mediciones', [AcuarioController::class, 'store']);
 
-// Ruta para que Angular lea el estado actual al abrir la app
-Route::get('/estado-actual', function () {
-    return App\Models\Configuracion::first();
-});
+// 3. DASHBOARD (GET) - Estado Actual en Vivo
+// Angular: this.http.get('/api/dashboard')
+Route::get('/dashboard', [AcuarioController::class, 'dashboard']);
 
+// 4. CONTROL (POST) - Botones y Comandos
+// Angular: this.http.post('/api/control', { r1: true })
+Route::post('/control', [AcuarioController::class, 'updateState']);
+
+// 5. BITÁCORA (Opcional)
+Route::post('/bitacora', [BitacoraController::class, 'store']);
+Route::get('/bitacora', [BitacoraController::class, 'index']);
