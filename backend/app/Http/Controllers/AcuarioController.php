@@ -7,23 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\Medicion;
 use App\Models\SistemaEstado;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class AcuarioController extends Controller
 {
     // ============================================================
     // 1. HISTORIAL (GET /api/mediciones)
-    // Para tu tabla y gráficos en Angular
     // ============================================================
     public function index()
     {
-        // Devolvemos las últimas 50 o 100 mediciones ordenadas
-        // Puedes usar paginación: return Medicion::orderBy('id', 'desc')->paginate(20);
         return Medicion::orderBy('created_at', 'desc')->take(100)->get();
     }
 
     // ============================================================
     // 2. DASHBOARD EN VIVO (GET /api/dashboard)
-    // Para las tarjetas de "Estado Actual" en Angular
     // ============================================================
     public function dashboard()
     {
@@ -35,22 +32,43 @@ class AcuarioController extends Controller
 
     // ============================================================
     // 3. CEREBRO ESP32 (POST /api/mediciones)
-    // Recibe datos del sensor y responde con comandos
     // ============================================================
     public function store(Request $request)
     {
+        // 1. GUARDAR HISTORIAL EXACTO (Respetando tu migración de medicions)
         try {
-            Medicion::create($request->all());
+            Medicion::create([
+                'temp_aire' => $request->input('temp_aire', 0), // Nombre correcto
+                'hum_aire'  => $request->input('hum_aire', 0),  // Nombre correcto
+                'presion'   => $request->input('presion', 0),
+                'temp_agua' => $request->input('temp_agua', 0),
+                'ph'        => $request->input('ph', 0),
+                'tds'       => $request->input('tds', 0),
+                'box_temp'  => $request->input('box_temp', 0), // Guardar temp caja en historial
+                'llenando'  => $request->input('llenando', false),
+                'volumen_actual_ml' => $request->input('volumen_actual_ml', 0)
+            ]);
         } catch (\Exception $e) {
-            // Ahora sí funcionará esto sin marcar error
             Log::error("Error guardando medición: " . $e->getMessage());
         }
 
-        // B. Leer configuración
+        // 2. ACTUALIZAR ESTADO ACTUAL (Botones y Caja)
         $estado = SistemaEstado::first(); 
-        if (!$estado) $estado = SistemaEstado::create(['modo' => 'AUTO']);
+        if (!$estado) {
+            $estado = SistemaEstado::create(['modo' => 'AUTO']);
+        }
 
-        // C. Responder al ESP32
+       // 🟢 NUEVO: Solo apagamos el botón si el ESP32 avisa explícitamente que ya terminó la meta
+        if ($request->input('termino_llenado') === true) {
+            $estado->iniciar_llenado = false;
+        }
+
+        // Guardar estado de la caja
+        $estado->box_temp = $request->input('box_temp', 0);
+        $estado->box_hum  = $request->input('box_hum', 0);
+        $estado->save();
+
+        // 3. RESPONDER AL ESP32
         return response()->json([
             'modo'             => $estado->modo,
             'iniciar_llenado'  => (bool)$estado->iniciar_llenado,
@@ -72,14 +90,17 @@ class AcuarioController extends Controller
 
     // ============================================================
     // 4. CONTROL MANUAL (POST /api/control)
+    // 👇 ESTO FALTABA PARA QUE LOS BOTONES DE ANGULAR FUNCIONEN 👇
     // ============================================================
     public function updateState(Request $request)
     {
         $estado = SistemaEstado::first();
         
+        // Si el frontend envía un comando para el ventilador
         if ($request->has('fan_state')) {
             $estado->fan_cmd = $request->fan_state ? 1 : 0; 
         } else {
+            // Actualizar relés u otros parámetros
             $estado->update($request->all());
         }
         $estado->save();

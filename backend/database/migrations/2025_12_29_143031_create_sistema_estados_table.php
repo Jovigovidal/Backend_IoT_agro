@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('sistema_estados', function (Blueprint $table) {
             $table->id();
-            $table->string('modo')->default('AUTO'); // 'AUTO' o 'MANUAL'
+            $table->string('modo')->default('AUTO'); 
             
             // Control de Llenado Remoto
             $table->boolean('iniciar_llenado')->default(false);
@@ -22,25 +22,29 @@ return new class extends Migration
             $table->integer('prog_min')->default(-1);
             $table->double('prog_meta_litros')->default(0);
 
-            // Relays (Comandos Manuales desde Web)
-            $table->boolean('r1')->default(false); // Oxígeno
-            $table->boolean('r2')->default(false); // Timer/Libre
-            $table->boolean('r3')->default(false); // Bomba
-            $table->boolean('r4')->default(false); // Calentador
+            // Relays
+            $table->boolean('r1')->default(false); 
+            $table->boolean('r2')->default(false); 
+            $table->boolean('r3')->default(false); 
+            $table->boolean('r4')->default(false); 
             
-            // Habilitadores (Interruptores Maestros)
+            // Habilitadores
             $table->boolean('r1_en')->default(true);
             $table->boolean('r2_en')->default(true);
             $table->boolean('r3_en')->default(true);
             $table->boolean('r4_en')->default(true);
 
             // Ventilador
-            $table->integer('fan_cmd')->default(0); // 0=Off, 1=On
+            $table->integer('fan_cmd')->default(0); 
+
+            // 👇 AQUÍ ESTÁN LAS COLUMNAS QUE FALTABAN 👇
+            $table->double('box_temp')->default(0);
+            $table->double('box_hum')->default(0);
 
             $table->timestamps();
         });
 
-        // IMPORTANTE: Insertar la fila inicial (Configuración por defecto)
+        // Insertar la fila inicial por defecto
         DB::table('sistema_estados')->insert([
             'modo' => 'AUTO',
             'created_at' => now(),
