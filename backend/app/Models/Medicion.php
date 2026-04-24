@@ -13,6 +13,6 @@ class Medicion extends Model
     protected $fillable = [
         'temp_aire', 'hum_aire', 'presion',
         'temp_agua', 'ph', 'tds',
-        'box_temp', 'llenando', 'volumen_actual_ml'
+        'box_temp',
     ];
 }
