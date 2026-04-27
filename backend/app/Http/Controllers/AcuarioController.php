@@ -13,11 +13,13 @@ use Carbon\Carbon;
 
 class AcuarioController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         return Medicion::orderBy('created_at', 'desc')->take(100)->get();
     }
 
-    public function dashboard() {
+    public function dashboard()
+    {
         $ultima = MedicionLive::latest()->first();
         // Mapeo para que Angular vea temp_aire aunque la tabla diga temperatura
         if ($ultima) {
@@ -30,9 +32,26 @@ class AcuarioController extends Controller
         ]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         try {
-            // 1. Guardar en VIVO (Dashboard)
+            $evento = $request->input('evento');
+
+            // 1. MODO HISTÓRICO / CAJA NEGRA (Viene de enviarALaravelHistorico en el ESP32)
+            if ($evento) {
+                $his = new Medicion();
+                $his->temp_aire = $request->input('temp_aire', 0);
+                $his->hum_aire  = $request->input('hum_aire', 0);
+                $his->presion   = $request->input('presion', 0);
+                $his->temp_agua = $request->input('temp_agua', 0);
+                $his->ph        = $request->input('ph', 0);
+                $his->tds       = $request->input('tds', 0);
+                $his->save();
+
+                return response()->json(['status' => 'Histórico/Caja Negra guardado', 'evento' => $evento]);
+            }
+
+            // 2. MODO EN VIVO (Viene de sincronizarLaravel en el ESP32)
             $live = new MedicionLive();
             $live->temperatura = $request->input('temp_aire', 0);
             $live->humedad     = $request->input('hum_aire', 0);
@@ -46,30 +65,19 @@ class AcuarioController extends Controller
                 MedicionLive::orderBy('id', 'asc')->limit(10)->delete();
             }
 
-            // 2. Guardar HISTÓRICO (Cada 3 horas)
-            $ahora = now();
-            if ($ahora->hour % 3 == 0) {
-                $yaGuardado = Medicion::whereBetween('created_at', [
-                    $ahora->copy()->startOfHour(),
-                    $ahora->copy()->endOfHour()
-                ])->exists();
-                if (!$yaGuardado) {
-                    $his = new Medicion();
-                    $his->temp_aire = $request->input('temp_aire', 0);
-                    $his->hum_aire  = $request->input('hum_aire', 0);
-                    $his->save();
-                }
-            }
-
             // 3. Lógica de Relés Dinámicos
             $estado = SistemaEstado::first();
-            
+            if (!$estado) {
+                $estado = new SistemaEstado();
+                $estado->modo = 'AUTO';
+            } // Fix: Previene error si la tabla está vacía
+
             // 4. Registrar en Bitácora si es un reinicio o hubo desconexión prolongada
             if ($estado && $estado->updated_at) {
                 $minutosInactivo = now()->diffInMinutes($estado->updated_at);
                 $motivo = $request->input('motivo_reinicio');
                 $esReinicio = $request->input('reinicio') == true || !empty($motivo);
-                
+
                 if ($minutosInactivo >= 5 || $esReinicio) {
                     $detalleMotivo = !empty($motivo) ? " Motivo: {$motivo}." : "";
                     Bitacora::create([
@@ -88,16 +96,19 @@ class AcuarioController extends Controller
                 $valR2 = $request->input($estado->r2_sensor, 0);
                 $estado->r2 = ($valR2 < $estado->r2_min || $valR2 > $estado->r2_max);
             }
-            
+
             $estado->box_temp = $request->input('box_temp', 0);
             $estado->box_hum  = $request->input('box_hum', 0);
             $estado->save();
 
             return response()->json([
                 'modo' => $estado->modo,
-                'r1' => (bool)$estado->r1, 'r2' => (bool)$estado->r2,
-                'r3' => (bool)$estado->r3, 'r4' => (bool)$estado->r4,
-                'r1_en' => (bool)$estado->r1_en, 'fan_cmd' => (int)$estado->fan_cmd
+                'r1' => (bool)$estado->r1,
+                'r2' => (bool)$estado->r2,
+                'r3' => (bool)$estado->r3,
+                'r4' => (bool)$estado->r4,
+                'r1_en' => (bool)$estado->r1_en,
+                'fan_cmd' => (int)$estado->fan_cmd
             ]);
         } catch (\Exception $e) {
             Log::error("Error: " . $e->getMessage());
@@ -105,7 +116,8 @@ class AcuarioController extends Controller
         }
     }
 
-    public function updateState(Request $request) {
+    public function updateState(Request $request)
+    {
         // Validación de Laravel para evitar inyecciones incorrectas
         $request->validate([
             'r1_min' => 'nullable|numeric',
@@ -117,8 +129,8 @@ class AcuarioController extends Controller
         $estado = SistemaEstado::first();
         if ($request->has('fan_state')) {
             $estado->fan_cmd = $request->fan_state ? 1 : 0;
-        } 
-        
+        }
+
         if ($request->has('modo')) {
             $estado->modo = $request->modo;
         }
