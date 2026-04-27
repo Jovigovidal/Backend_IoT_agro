@@ -7,105 +7,136 @@ use Illuminate\Http\Request;
 use App\Models\Medicion;
 use App\Models\MedicionLive;
 use App\Models\SistemaEstado;
+use App\Models\Bitacora;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class AcuarioController extends Controller
 {
-    public function index()
-    {
+    public function index() {
         return Medicion::orderBy('created_at', 'desc')->take(100)->get();
     }
 
-    public function dashboard()
-    {
+    public function dashboard() {
         $ultima = MedicionLive::latest()->first();
-
-        // 🪄 EL TRUCO MÁGICO PARA ANGULAR:
-        // Como MedicionLive usa los nombres antiguos, los clonamos a los nombres 
-        // nuevos al vuelo para que tu panel de Angular no se rompa ni note la diferencia.
+        // Mapeo para que Angular vea temp_aire aunque la tabla diga temperatura
         if ($ultima) {
             $ultima->temp_aire = $ultima->temperatura;
             $ultima->hum_aire  = $ultima->humedad;
         }
-
         return response()->json([
             'ultima_medicion' => $ultima,
             'estado_actual'   => SistemaEstado::first()
         ]);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         try {
-            // 1. GUARDAR EN VIVO (Usamos los nombres ANTIGUOS para no romper la tabla)
+            // 1. Guardar en VIVO (Dashboard)
             $live = new MedicionLive();
-            $live->temperatura = $request->input('temp_aire', 0); 
-            $live->humedad     = $request->input('hum_aire', 0);  
+            $live->temperatura = $request->input('temp_aire', 0);
+            $live->humedad     = $request->input('hum_aire', 0);
             $live->presion     = $request->input('presion', 0);
             $live->temp_agua   = $request->input('temp_agua', 0);
             $live->ph          = $request->input('ph', 0);
             $live->tds         = $request->input('tds', 0);
-            // Nota: No guardamos box_temp aquí porque la tabla antigua no lo tiene
-            $live->save(); // Usamos save() para saltar la protección $fillable
+            $live->save();
 
-            // Limpieza de la rueda de hámster
             if (MedicionLive::count() > 100) {
                 MedicionLive::orderBy('id', 'asc')->limit(10)->delete();
             }
 
-            // 2. GUARDAR HISTÓRICO CADA 3 HORAS (Usamos los nombres NUEVOS)
-            $ahora = Carbon::now();
+            // 2. Guardar HISTÓRICO (Cada 3 horas)
+            $ahora = now();
             if ($ahora->hour % 3 == 0) {
-                $yaGuardado = Medicion::whereDate('created_at', $ahora->toDateString())
-                                      ->whereHour('created_at', $ahora->hour)
-                                      ->exists();
+                $yaGuardado = Medicion::whereBetween('created_at', [
+                    $ahora->copy()->startOfHour(),
+                    $ahora->copy()->endOfHour()
+                ])->exists();
                 if (!$yaGuardado) {
-                    $historico = new Medicion();
-                    $historico->temp_aire = $request->input('temp_aire', 0);
-                    $historico->hum_aire  = $request->input('hum_aire', 0);
-                    $historico->presion   = $request->input('presion', 0);
-                    $historico->temp_agua = $request->input('temp_agua', 0);
-                    $historico->ph        = $request->input('ph', 0);
-                    $historico->tds       = $request->input('tds', 0);
-                    $historico->box_temp  = $request->input('box_temp', 0);
-                    $historico->save();
-                    Log::info("💾 Guardado histórico permanente exitoso.");
+                    $his = new Medicion();
+                    $his->temp_aire = $request->input('temp_aire', 0);
+                    $his->hum_aire  = $request->input('hum_aire', 0);
+                    $his->save();
                 }
             }
 
-            // 3. ACTUALIZAR CAJA FUERTE Y RELÉS
-            $estado = SistemaEstado::firstOrCreate([], ['modo' => 'AUTO']);
+            // 3. Lógica de Relés Dinámicos
+            $estado = SistemaEstado::first();
+            
+            // 4. Registrar en Bitácora si es un reinicio o hubo desconexión prolongada
+            if ($estado && $estado->updated_at) {
+                $minutosInactivo = now()->diffInMinutes($estado->updated_at);
+                $motivo = $request->input('motivo_reinicio');
+                $esReinicio = $request->input('reinicio') == true || !empty($motivo);
+                
+                if ($minutosInactivo >= 5 || $esReinicio) {
+                    $detalleMotivo = !empty($motivo) ? " Motivo: {$motivo}." : "";
+                    Bitacora::create([
+                        'evento'      => 'SISTEMA',
+                        'descripcion' => "Microcontrolador reconectado/reiniciado. Tiempo inactivo: {$minutosInactivo} min.{$detalleMotivo}"
+                    ]);
+                }
+            }
+
+            if ($estado && $estado->modo === 'AUTO') {
+                // Lógica R1
+                $valR1 = $request->input($estado->r1_sensor, 0);
+                $estado->r1 = ($valR1 < $estado->r1_min || $valR1 > $estado->r1_max);
+
+                // Lógica R2
+                $valR2 = $request->input($estado->r2_sensor, 0);
+                $estado->r2 = ($valR2 < $estado->r2_min || $valR2 > $estado->r2_max);
+            }
+            
             $estado->box_temp = $request->input('box_temp', 0);
             $estado->box_hum  = $request->input('box_hum', 0);
             $estado->save();
 
-            // 4. RESPUESTA AL ESP32
             return response()->json([
-                'modo'    => $estado->modo,
-                'r1'      => (bool)$estado->r1,
-                'r2'      => (bool)$estado->r2,
-                'r3'      => (bool)$estado->r3,
-                'r4'      => (bool)$estado->r4,
-                'r1_en'   => (bool)$estado->r1_en,
-                'fan_cmd' => (int)$estado->fan_cmd
+                'modo' => $estado->modo,
+                'r1' => (bool)$estado->r1, 'r2' => (bool)$estado->r2,
+                'r3' => (bool)$estado->r3, 'r4' => (bool)$estado->r4,
+                'r1_en' => (bool)$estado->r1_en, 'fan_cmd' => (int)$estado->fan_cmd
             ]);
-
         } catch (\Exception $e) {
-            Log::error("❌ ERROR CRÍTICO: " . $e->getMessage());
+            Log::error("Error: " . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
-    public function updateState(Request $request)
-    {
+    public function updateState(Request $request) {
+        // Validación de Laravel para evitar inyecciones incorrectas
+        $request->validate([
+            'r1_min' => 'nullable|numeric',
+            'r1_max' => 'nullable|numeric',
+            'r2_min' => 'nullable|numeric',
+            'r2_max' => 'nullable|numeric',
+        ]);
+
         $estado = SistemaEstado::first();
         if ($request->has('fan_state')) {
             $estado->fan_cmd = $request->fan_state ? 1 : 0;
-        } else {
-            $estado->update($request->all());
+        } 
+        
+        if ($request->has('modo')) {
+            $estado->modo = $request->modo;
         }
+
+        // Guardar estado de los relés y habilitaciones
+        foreach (['r1', 'r2', 'r3', 'r4'] as $r) {
+            if ($request->has($r)) $estado->$r = filter_var($request->$r, FILTER_VALIDATE_BOOLEAN);
+            if ($request->has("{$r}_en")) $estado->{"{$r}_en"} = filter_var($request->{"{$r}_en"}, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        // Guardar configuración de Zonas de Confort (Sensores, Min y Max)
+        foreach (['r1', 'r2'] as $r) {
+            if ($request->has("{$r}_sensor")) $estado->{"{$r}_sensor"} = $request->{"{$r}_sensor"};
+            if ($request->filled("{$r}_min")) $estado->{"{$r}_min"} = (float) $request->{"{$r}_min"};
+            if ($request->filled("{$r}_max")) $estado->{"{$r}_max"} = (float) $request->{"{$r}_max"};
+        }
+
         $estado->save();
-        return response()->json(['status' => 'ok']);
+        return response()->json(['status' => 'ok', 'config' => $estado]);
     }
 }

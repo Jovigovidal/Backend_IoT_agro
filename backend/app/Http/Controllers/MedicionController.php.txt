@@ -47,6 +47,15 @@ class MedicionController extends Controller
             if($request->has("relay{$i}_enabled")) {
                 $config->{"relay{$i}_enabled"} = filter_var($request->{"relay{$i}_enabled"}, FILTER_VALIDATE_BOOLEAN);
             }
+            if($request->has("relay{$i}_sensor")) {
+                $config->{"relay{$i}_sensor"} = $request->{"relay{$i}_sensor"};
+            }
+            if($request->has("relay{$i}_min")) {
+                $config->{"relay{$i}_min"} = (float)$request->{"relay{$i}_min"};
+            }
+            if($request->has("relay{$i}_max")) {
+                $config->{"relay{$i}_max"} = (float)$request->{"relay{$i}_max"};
+            }
         }
 
         // C. GUARDAR VENTILADOR (NUEVO) 💨
@@ -91,9 +100,10 @@ class MedicionController extends Controller
         $historialGuardado = false;
 
         if (in_array($ahora->hour, $horasPermitidas)) {
-            $yaGuardado = Medicion::whereDate('created_at', $ahora->toDateString())
-                                  ->whereHour('created_at', $ahora->hour)
-                                  ->exists();     
+            $yaGuardado = Medicion::whereBetween('created_at', [
+                $ahora->copy()->startOfHour(),
+                $ahora->copy()->endOfHour()
+            ])->exists();
             if (!$yaGuardado) {
                 Medicion::create($datos);
                 $historialGuardado = true;
@@ -139,7 +149,15 @@ class MedicionController extends Controller
             'r1_en'   => (bool)$config->relay1_enabled,
             'r2_en'   => (bool)$config->relay2_enabled,
             'r3_en'   => (bool)$config->relay3_enabled,
-            'r4_en'   => (bool)$config->relay4_enabled
+            'r4_en'   => (bool)$config->relay4_enabled,
+
+            // Umbrales Relé 1 y 2
+            'r1_sen'  => $config->relay1_sensor ?? 'temp_agua',
+            'r1_min'  => (float)($config->relay1_min ?? 20),
+            'r1_max'  => (float)($config->relay1_max ?? 30),
+            'r2_sen'  => $config->relay2_sensor ?? 'ph',
+            'r2_min'  => (float)($config->relay2_min ?? 6.5),
+            'r2_max'  => (float)($config->relay2_max ?? 7.5)
         ]);
     }
 }
