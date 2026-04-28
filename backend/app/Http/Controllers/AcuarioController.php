@@ -10,6 +10,7 @@ use App\Models\SistemaEstado;
 use App\Models\Bitacora;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Jobs\SincronizarGoogleSheets;
 
 class AcuarioController extends Controller
 {
@@ -47,7 +48,8 @@ class AcuarioController extends Controller
                 $his->ph        = $request->input('ph', 0);
                 $his->tds       = $request->input('tds', 0);
                 $his->save();
-
+                Log::info("✅ Dato histórico guardado en la tabla medicions (MySQL)");
+                SincronizarGoogleSheets::dispatch($his);
                 return response()->json(['status' => 'Histórico/Caja Negra guardado', 'evento' => $evento]);
             }
 
@@ -60,6 +62,22 @@ class AcuarioController extends Controller
             $live->ph          = $request->input('ph', 0);
             $live->tds         = $request->input('tds', 0);
             $live->save();
+
+
+            // 🔥 INICIO DE CÓDIGO DE PRUEBA 🔥
+            // Esto forzará a que CADA VEZ que el ESP32 envíe datos en vivo (cada 5 seg),
+            // también se guarde una copia en tu tabla histórica 'medicions'.
+          /*  $testHis = new Medicion();
+            $testHis->temp_aire = $request->input('temp_aire', 0);
+            $testHis->hum_aire  = $request->input('hum_aire', 0);
+            $testHis->presion   = $request->input('presion', 0);
+            $testHis->temp_agua = $request->input('temp_agua', 0);
+            $testHis->ph        = $request->input('ph', 0);
+            $testHis->tds       = $request->input('tds', 0);
+            $testHis->save();
+            // 🔥 FIN DE CÓDIGO DE PRUEBA 🔥
+            Log::info("✅ Dato histórico guardado en la tabla medicions (MySQL)");
+            SincronizarGoogleSheets::dispatch($testHis); */
 
             if (MedicionLive::count() > 100) {
                 MedicionLive::orderBy('id', 'asc')->limit(10)->delete();
