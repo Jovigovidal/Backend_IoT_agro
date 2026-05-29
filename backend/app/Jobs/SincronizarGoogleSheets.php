@@ -15,7 +15,7 @@ class SincronizarGoogleSheets implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $medicion;
+    public Medicion $medicion;
 
     /**
      * Recibimos la medición que Laravel acaba de guardar en MySQL.
