@@ -48,7 +48,7 @@ class SincronizarGoogleSheets implements ShouldQueue
             'evento'    => 'LARAVEL_SYNC'
         ]);
 
-        if ($response->successful()) {
+        if ($response->successful() && str_contains($response->body(), 'OK_SYNC_COMPLETO')) {
             Log::info("☁️ Registro ID {$this->medicion->id} sincronizado exitosamente a Google Sheets.");
         } else {
             Log::error("❌ Error al sincronizar a Google Sheets: " . $response->body());
