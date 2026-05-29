@@ -58,3 +58,4 @@ class SincronizarGoogleSheets implements ShouldQueue
         }
     }
 }
+//prueba de sincronización con google sheets, se debe ejecutar el comando php artisan queue:work para que se ejecute el job en segundo plano.
