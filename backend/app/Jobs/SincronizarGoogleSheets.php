@@ -37,16 +37,22 @@ class SincronizarGoogleSheets implements ShouldQueue
             return;
         }
 
-        // Como tu script usa doGet(e), enviamos una petición GET con los parámetros
-        $response = Http::get($url, [
-            'temp_aire' => $this->medicion->temp_aire,
-            'hum_aire'  => $this->medicion->hum_aire,
-            'presion'   => $this->medicion->presion,
-            'temp_agua' => $this->medicion->temp_agua,
-            'ph'        => $this->medicion->ph,
-            'tds'       => $this->medicion->tds,
-            'evento'    => 'LARAVEL_SYNC'
-        ]);
+        try {
+            // Envolvemos en try-catch por si hay errores de red (Ej. problemas de SSL)
+            // withoutVerifying() desactiva la validación estricta SSL, solucionando el problema del reloj en 2026
+            $response = Http::withoutVerifying()->get($url, [
+                'temp_aire' => $this->medicion->temp_aire,
+                'hum_aire'  => $this->medicion->hum_aire,
+                'presion'   => $this->medicion->presion,
+                'temp_agua' => $this->medicion->temp_agua,
+                'ph'        => $this->medicion->ph,
+                'tds'       => $this->medicion->tds,
+                'evento'    => 'LARAVEL_SYNC'
+            ]);
+        } catch (\Exception $e) {
+            Log::error("❌ Excepción de red al contactar a Google Sheets: " . $e->getMessage());
+            throw $e;
+        }
 
         if ($response->successful() && str_contains($response->body(), 'OK_SYNC_COMPLETO')) {
             Log::info("☁️ Registro ID {$this->medicion->id} sincronizado exitosamente a Google Sheets.");
