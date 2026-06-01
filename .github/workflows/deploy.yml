@@ -1,0 +1,24 @@
+name: Despliegue Produccion IOT
+
+on:
+  push:
+    branches:
+      - main  # Cambia a 'master' si tu rama principal se llama así
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Sincronizar codigo nuevo
+        run: |
+          # 1. Entramos a la raíz del repositorio para descargar los cambios
+          cd /home/jovi_go/Escritorio/IOT_BACKEND-APP/Backend_IoT_agro
+          git reset --hard
+          git pull origin main
+          
+      - name: Actualizar dependencias y optimizar Laravel
+        run: |
+          # 2. Entramos a la carpeta de Laravel para ejecutar los comandos de PHP
+          cd /home/jovi_go/Escritorio/IOT_BACKEND-APP/Backend_IoT_agro/backend
+          composer install --no-interaction --prefer-dist --optimize-autoloader
+          php artisan optimize:clear
