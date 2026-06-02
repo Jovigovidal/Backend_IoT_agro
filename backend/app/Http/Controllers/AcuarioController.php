@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Medicion;
 use App\Models\MedicionLive;
 use App\Models\SistemaEstado;
+use App\Jobs\SincronizarGoogleSheets; // <--- Importación clave para el Job
 use App\Models\Bitacora;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
-use App\Jobs\SincronizarGoogleSheets;
 
 class AcuarioController extends Controller
 {
@@ -40,17 +40,39 @@ class AcuarioController extends Controller
 
             // 1. MODO HISTÓRICO / CAJA NEGRA (Viene de enviarALaravelHistorico en el ESP32)
             if ($evento) {
-                $his = new Medicion();
-                $his->temp_aire = $request->input('temp_aire', 0);
-                $his->hum_aire  = $request->input('hum_aire', 0);
-                $his->presion   = $request->input('presion', 0);
-                $his->temp_agua = $request->input('temp_agua', 0);
-                $his->ph        = $request->input('ph', 0);
-                $his->tds       = $request->input('tds', 0);
-                $his->save();
-                Log::info("✅ Dato histórico guardado en la tabla medicions (MySQL)");
-                SincronizarGoogleSheets::dispatch($his);
-                return response()->json(['status' => 'Histórico/Caja Negra guardado', 'evento' => $evento]);
+                $ahora = Carbon::now();
+
+                // Definimos las horas permitidas (cada 3 horas)
+                $horasPermitidas = [0, 3, 6, 9, 12, 15, 18, 21];
+
+                // Si la hora actual coincide con una hora permitida...
+                if (in_array($ahora->hour, $horasPermitidas)) {
+
+                    // Verificamos si YA guardamos un dato en esta misma hora para no duplicar
+                    $yaGuardado = Medicion::whereBetween('created_at', [
+                        $ahora->copy()->startOfHour(),
+                        $ahora->copy()->endOfHour()
+                    ])->exists();
+
+                    // Si no se ha guardado nada en esta hora, lo registramos
+                    if (!$yaGuardado) {
+                        $his = new Medicion();
+                        $his->temp_aire = $request->input('temp_aire', 0);
+                        $his->hum_aire  = $request->input('hum_aire', 0);
+                        $his->presion   = $request->input('presion', 0);
+                        $his->temp_agua = $request->input('temp_agua', 0);
+                        $his->ph        = $request->input('ph', 0);
+                        $his->tds       = $request->input('tds', 0);
+                        $his->save();
+
+                        Log::info("✅ Dato histórico guardado en MySQL (Hora {$ahora->hour}:00)");
+
+                        // Enviamos a la cola para Google Sheets
+                        SincronizarGoogleSheets::dispatch($his);
+                    }
+                }
+
+                return response()->json(['status' => 'Histórico procesado', 'evento' => $evento]);
             }
 
             // 2. MODO EN VIVO (Viene de sincronizarLaravel en el ESP32)
@@ -63,22 +85,7 @@ class AcuarioController extends Controller
             $live->tds         = $request->input('tds', 0);
             $live->save();
 
-
-            // 🔥 INICIO DE CÓDIGO DE PRUEBA 🔥
-            // Esto forzará a que CADA VEZ que el ESP32 envíe datos en vivo (cada 5 seg),
-            // también se guarde una copia en tu tabla histórica 'medicions'.
-          /*  $testHis = new Medicion();
-            $testHis->temp_aire = $request->input('temp_aire', 0);
-            $testHis->hum_aire  = $request->input('hum_aire', 0);
-            $testHis->presion   = $request->input('presion', 0);
-            $testHis->temp_agua = $request->input('temp_agua', 0);
-            $testHis->ph        = $request->input('ph', 0);
-            $testHis->tds       = $request->input('tds', 0);
-            $testHis->save();
-            // 🔥 FIN DE CÓDIGO DE PRUEBA 🔥
-            Log::info("✅ Dato histórico guardado en la tabla medicions (MySQL)");
-            SincronizarGoogleSheets::dispatch($testHis); */
-
+            // Limpieza para mantener solo 100 registros en la tabla "Live"
             if (MedicionLive::count() > 100) {
                 MedicionLive::orderBy('id', 'asc')->limit(10)->delete();
             }
@@ -129,7 +136,7 @@ class AcuarioController extends Controller
                 'fan_cmd' => (int)$estado->fan_cmd
             ]);
         } catch (\Exception $e) {
-            Log::error("Error: " . $e->getMessage());
+            Log::error("Error en AcuarioController: " . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
