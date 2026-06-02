@@ -141,17 +141,19 @@ class AcuarioController extends Controller
         }
     }
 
-    public function updateState(Request $request)
+   public function updateState(Request $request)
     {
-        // Validación de Laravel para evitar inyecciones incorrectas
-        $request->validate([
-            'r1_min' => 'nullable|numeric',
-            'r1_max' => 'nullable|numeric',
-            'r2_min' => 'nullable|numeric',
-            'r2_max' => 'nullable|numeric',
-        ]);
+        // 1. REGISTRO DE CAJA NEGRA (Para ver qué envía Angular)
+        Log::info('📥 Payload recibido desde Angular:', $request->all());
 
+        // 2. BUSCAR O CREAR ESTADO (Protección contra base de datos vacía)
         $estado = SistemaEstado::first();
+        if (!$estado) {
+            $estado = new SistemaEstado();
+            $estado->modo = 'AUTO';
+        }
+
+        // 3. GUARDAR COMANDOS GENERALES
         if ($request->has('fan_state')) {
             $estado->fan_cmd = $request->fan_state ? 1 : 0;
         }
@@ -160,20 +162,35 @@ class AcuarioController extends Controller
             $estado->modo = $request->modo;
         }
 
-        // Guardar estado de los relés y habilitaciones
+        // 4. GUARDAR ESTADO DE RELÉS
         foreach (['r1', 'r2', 'r3', 'r4'] as $r) {
-            if ($request->has($r)) $estado->$r = filter_var($request->$r, FILTER_VALIDATE_BOOLEAN);
-            if ($request->has("{$r}_en")) $estado->{"{$r}_en"} = filter_var($request->{"{$r}_en"}, FILTER_VALIDATE_BOOLEAN);
+            if ($request->has($r)) {
+                $estado->$r = filter_var($request->input($r), FILTER_VALIDATE_BOOLEAN);
+            }
+            if ($request->has("{$r}_en")) {
+                $estado->{"{$r}_en"} = filter_var($request->input("{$r}_en"), FILTER_VALIDATE_BOOLEAN);
+            }
         }
 
-        // Guardar configuración de Zonas de Confort (Sensores, Min y Max)
+        // 5. GUARDAR ZONAS DE CONFORT (Sin bloqueos de validación)
         foreach (['r1', 'r2'] as $r) {
-            if ($request->has("{$r}_sensor")) $estado->{"{$r}_sensor"} = $request->{"{$r}_sensor"};
-            if ($request->filled("{$r}_min")) $estado->{"{$r}_min"} = (float) $request->{"{$r}_min"};
-            if ($request->filled("{$r}_max")) $estado->{"{$r}_max"} = (float) $request->{"{$r}_max"};
+            if ($request->has("{$r}_sensor")) {
+                $estado->{"{$r}_sensor"} = $request->input("{$r}_sensor");
+            }
+            
+            // Verificamos si existe y no es nulo, luego forzamos a Float
+            if ($request->has("{$r}_min") && $request->input("{$r}_min") !== null) {
+                $estado->{"{$r}_min"} = (float) $request->input("{$r}_min");
+            }
+            
+            if ($request->has("{$r}_max") && $request->input("{$r}_max") !== null) {
+                $estado->{"{$r}_max"} = (float) $request->input("{$r}_max");
+            }
         }
 
         $estado->save();
+        Log::info('✅ BD Actualizada con éxito:', $estado->toArray());
+
         return response()->json(['status' => 'ok', 'config' => $estado]);
     }
 }
