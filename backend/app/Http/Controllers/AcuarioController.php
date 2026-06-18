@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Medicion;
 use App\Models\MedicionLive;
 use App\Models\SistemaEstado;
-use App\Jobs\SincronizarGoogleSheets; // <--- Importación clave para el Job
+use App\Jobs\SincronizarGoogleSheets;
 use App\Models\Bitacora;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -40,21 +40,28 @@ class AcuarioController extends Controller
 
             // 1. MODO HISTÓRICO / CAJA NEGRA (Viene de enviarALaravelHistorico en el ESP32)
             if ($evento) {
-                $ahora = Carbon::now();
+                // 🔥 EL PARCHE: Leemos la hora enviada por el ESP32. Si no la envía, usamos la actual.
+                $timestamp = $request->input('fecha_hora');
+                
+                if ($timestamp) {
+                    $ahora = Carbon::createFromTimestamp($timestamp)->timezone('America/Lima');
+                } else {
+                    $ahora = Carbon::now();
+                }
 
                 // Definimos las horas permitidas (cada 3 horas)
                 $horasPermitidas = [0, 3, 6, 9, 12, 15, 18, 21];
 
-                // Si la hora actual coincide con una hora permitida...
+                // Si la hora (original o actual) coincide con una hora permitida...
                 if (in_array($ahora->hour, $horasPermitidas)) {
 
-                    // Verificamos si YA guardamos un dato en esta misma hora para no duplicar
+                    // Verificamos si YA guardamos un dato en esa hora específica para no duplicar
                     $yaGuardado = Medicion::whereBetween('created_at', [
                         $ahora->copy()->startOfHour(),
                         $ahora->copy()->endOfHour()
                     ])->exists();
 
-                    // Si no se ha guardado nada en esta hora, lo registramos
+                    // Si no se ha guardado nada, lo registramos
                     if (!$yaGuardado) {
                         $his = new Medicion();
                         $his->temp_aire = $request->input('temp_aire', 0);
@@ -63,9 +70,13 @@ class AcuarioController extends Controller
                         $his->temp_agua = $request->input('temp_agua', 0);
                         $his->ph        = $request->input('ph', 0);
                         $his->tds       = $request->input('tds', 0);
+                        
+                        // 🔥 Forzamos la fecha histórica real en la base de datos
+                        $his->created_at = $ahora;
+                        $his->updated_at = $ahora;
                         $his->save();
 
-                        Log::info("✅ Dato histórico guardado en MySQL (Hora {$ahora->hour}:00)");
+                        Log::info("✅ Dato histórico guardado en MySQL (Hora original: {$ahora->format('Y-m-d H:i')})");
 
                         // Enviamos a la cola para Google Sheets
                         SincronizarGoogleSheets::dispatch($his);
@@ -95,7 +106,7 @@ class AcuarioController extends Controller
             if (!$estado) {
                 $estado = new SistemaEstado();
                 $estado->modo = 'AUTO';
-            } // Fix: Previene error si la tabla está vacía
+            }
 
             // 4. Registrar en Bitácora si es un reinicio o hubo desconexión prolongada
             if ($estado && $estado->updated_at) {
@@ -194,3 +205,5 @@ class AcuarioController extends Controller
         return response()->json(['status' => 'ok', 'config' => $estado]);
     }
 }
+
+//actualizado 18/06/26
