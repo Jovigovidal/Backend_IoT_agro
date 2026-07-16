@@ -96,8 +96,11 @@ class AcuarioController extends Controller
             $live->tds         = $request->input('tds', 0);
             $live->save();
 
-            if (MedicionLive::count() > 100) {
-                MedicionLive::orderBy('id', 'asc')->limit(10)->delete();
+            // Mantenemos la tabla 'medicion_live' con un máximo de 100 registros para optimizarla.
+            $count = MedicionLive::count();
+            if ($count > 100) {
+                // Eliminamos los registros más antiguos para mantener solo los últimos 100.
+                MedicionLive::orderBy('id', 'asc')->limit($count - 100)->delete();
             }
 
             // 3. Lógica de Relés Dinámicos
