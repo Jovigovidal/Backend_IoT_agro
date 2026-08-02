@@ -3,7 +3,7 @@ name: Despliegue Produccion IOT
 on:
   push:
     branches:
-      - main  # Cambia a 'master' si tu rama principal se llama así
+      - main
 
 jobs:
   deploy:
@@ -17,6 +17,9 @@ jobs:
           git pull origin main
           
       - name: Actualizar dependencias y optimizar Laravel
+        env:
+          CACHE_STORE: array
+          CACHE_DRIVER: array
         run: |
           # 2. Entramos a la carpeta de Laravel para ejecutar los comandos de PHP
           cd /home/jovi_go/Escritorio/IOT_BACKEND-APP/Backend_IoT_agro/backend
