@@ -1,113 +1,22 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Página-1" id="ndtd5C9YTLjhfyiebEe6">
-    <mxGraphModel dx="1947" dy="1906" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" adaptiveColors="auto">
+    <mxGraphModel dx="1754" dy="1642" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" adaptiveColors="auto">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <UserObject label="🐳 GOOLESHEETS" mermaidId="n:🐳 Ecosistema Docker (Red Interna: 172.x.x.x)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🐳 Ecosistema Docker (Red Interna: 172.x.x.x)" id="9JIEntzHgQPE8LqW7xyo-5">
-          <mxCell parent="1" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=20;" vertex="1">
-            <mxGeometry height="184" width="369" x="1760" y="-140" as="geometry" />
-          </mxCell>
-        </UserObject>
         <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;graph TD\n    %% Definición de Estilos Profesionales\n    classDef hardware fill:#2d3436,stroke:#0984e3,stroke-width:3px,color:#fff,rx:10,ry:10;\n    classDef cloud fill:#74b9ff,stroke:#0984e3,stroke-width:3px,color:#2d3436,rx:15,ry:15;\n    classDef dockerNode fill:#00b894,stroke:#00cec9,stroke-width:3px,color:#fff,rx:8,ry:8;\n    classDef dbNode fill:#fdcb6e,stroke:#e17055,stroke-width:3px,color:#2d3436,rx:8,ry:8;\n    classDef tunnel fill:#a29bfe,stroke:#6c5ce7,stroke-width:3px,color:#fff,rx:10,ry:10;\n\n    subgraph \&quot;🌐 Clientes Externos (Internet)\&quot;\n        ESP32[\&quot;fa:fa-microchip Microcontrolador ESP32-S3&lt;br/&gt;(Sensores y Relés)\&quot;]:::hardware\n        USUARIO[\&quot;fa:fa-laptop Usuario / Administrador&lt;br/&gt;(Navegador Web)\&quot;]:::hardware\n    end\n\n    subgraph \&quot;☁️ Zrok Cloud / Internet\&quot;\n        ZROK_CLOUD((\&quot;fa:fa-cloud Zrok Network&lt;br/&gt;(URL Pública HTTPS)\&quot;)):::cloud\n    end\n\n    subgraph \&quot;🐧 Servidor Local (Host Linux)\&quot;\n        direction TB\n        ZROK_CLIENT{\&quot;fa:fa-shield-alt Zrok Client&lt;br/&gt;(Túnel Seguro)\&quot;}:::tunnel\n        \n        subgraph \&quot;🐳 Ecosistema Docker (Red Interna: 172.x.x.x)\&quot;\n            direction LR\n            FRONTEND[\&quot;fa:fa-cubes Contenedor Angular&lt;br/&gt;(Puerto 80)\&quot;]:::dockerNode\n            BACKEND[\&quot;fa:fa-cogs Contenedor Laravel&lt;br/&gt;(Puerto 8000)\&quot;]:::dockerNode\n            DB[(\&quot;fa:fa-database Contenedor MySQL&lt;br/&gt;(Puerto 3306)\&quot;)]:::dbNode\n            \n            FRONTEND -. \&quot;fa:fa-exchange-alt API REST\&quot; .-&gt; BACKEND\n            BACKEND &lt;== \&quot;fa:fa-server Lectura/Escritura\&quot; ==&gt; DB\n        end\n        \n        ZROK_CLIENT ===|\&quot;Redirección local\&quot;| FRONTEND\n        ZROK_CLIENT ===|\&quot;Redirección local\&quot;| BACKEND\n    end\n\n    %% Conexiones principales\n    ESP32 --&gt;|\&quot;POST/GET (JSON)\&quot;| ZROK_CLOUD\n    USUARIO --&gt;|\&quot;HTTPS\&quot;| ZROK_CLOUD\n    ZROK_CLOUD ===|\&quot;fa:fa-lock Túnel Encriptado\&quot;| ZROK_CLIENT\n&quot;,&#xa;  &quot;config&quot;: null&#xa;}" id="639XBa-bMxHbPkgE7c4O-20">
           <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=10;" vertex="1">
             <mxGeometry height="510" width="1291.5" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="🌐 Clientes Externos (Internet)" mermaidId="n:🌐 Clientes Externos (Internet)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🌐 Clientes Externos (Internet)" id="639XBa-bMxHbPkgE7c4O-21">
-          <mxCell parent="639XBa-bMxHbPkgE7c4O-20" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=bottom;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=25;rotation=-90;labelPosition=center;verticalLabelPosition=top;align=center;horizontal=1;" vertex="1">
-            <mxGeometry height="320" width="800" x="-210" y="2" as="geometry" />
-          </mxCell>
-        </UserObject>
         <UserObject label=" " mermaidId="n:🐧 Servidor Local (Host Linux)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🐧 Servidor Local (Host Linux)" id="639XBa-bMxHbPkgE7c4O-26">
           <mxCell parent="639XBa-bMxHbPkgE7c4O-20" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
-            <mxGeometry height="738" width="439" x="970" y="-120" as="geometry" />
+            <mxGeometry height="738" width="439" x="980" y="-132" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Contenedor Angular&#xa;(Puerto 80)" mermaidId="n:FRONTEND" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Contenedor Angular&#xa;(Puerto 80)" id="639XBa-bMxHbPkgE7c4O-28">
           <mxCell parent="639XBa-bMxHbPkgE7c4O-26" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
-            <mxGeometry height="73" width="201" x="119" y="575.5" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-39" parent="639XBa-bMxHbPkgE7c4O-20" style="image;aspect=fixed;points=[[0.975,0.059242,0,0,0],[0.975,0.309087,0,0,0],[0.975,0.700598,0,0,0],[0.975,0.969091,0,0,0],[0.975879,0.500012,0,0,0]];align=center;fontSize=15;image=img/lib/azure2/app_services/App_Service_Domains.svg;labelBackgroundColor=none;" value="APLICATIVO WEB" vertex="1">
-          <mxGeometry height="184" width="227.49" x="70" y="-200" as="geometry" />
-        </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-41" parent="639XBa-bMxHbPkgE7c4O-20" style="shape=image;verticalAlign=bottom;verticalLabelPosition=top;labelBackgroundColor=none;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/icon-cache1/Computer_Hardware_Cute_Style_vol_2-2891/processor__computer__microchip__cpu__chip__device__frequency-1244.svg;labelPosition=center;align=center;fontSize=20;horizontal=1;" value=" ESP32-S3&#xa;" vertex="1">
-          <mxGeometry height="162" width="162" x="176" y="206" as="geometry" />
-        </mxCell>
-        <mxCell id="znKJy6GCWVH67ls1tCe_-5" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-41">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-44" parent="639XBa-bMxHbPkgE7c4O-20" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=16;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_thing_temperature_sensor;points=[[0.038462,0.278846,0,0,0],[0.038462,0.5,0,0,0],[0.038462,0.74359,0,0,0]];" value="TEMP. AIRE" vertex="1">
-          <mxGeometry height="78" width="78" x="60" y="380" as="geometry" />
-        </mxCell>
-        <mxCell id="znKJy6GCWVH67ls1tCe_-6" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-41">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-43" parent="639XBa-bMxHbPkgE7c4O-20" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=16;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_thing_temperature_humidity_sensor;points=[[0.038462,0.269231,0,0,0],[0.038462,0.5,0,0,0],[0.038462,0.730769,0,0,0],[0.5,0.961538,0,0,0]];" value="TEMP. AGUA" vertex="1">
-          <mxGeometry height="78" width="78" x="40.28999999999999" y="248" as="geometry" />
-        </mxCell>
-        <mxCell id="znKJy6GCWVH67ls1tCe_-7" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-41">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-42" parent="639XBa-bMxHbPkgE7c4O-20" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=16;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_thing_humidity_sensor;points=[[0.02561,0.388163,0,0,0],[0.025641,0.5,0,0,0],[0.025641,0.624103,0,0,0],[0.025641,0.739487,0,0,0],[0.025685,0.269206,0,0,0],[0.274217,0.961538,0,0,0],[0.384672,0.961496,0,0,0],[0.491453,0.961553,0,0,0],[0.602536,0.961538,0,0,0],[0.730057,0.96151,0,0,0],[0.961461,0.72667,0,0,0],[0.961525,0.499973,0,0,0],[0.961526,0.269195,0,0,0],[0.961546,0.388195,0,0,0],[0.961557,0.611377,0,0,0]];" value="HUMEDAD" vertex="1">
-          <mxGeometry height="78" width="78" x="60" y="120" as="geometry" />
-        </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-57" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="znKJy6GCWVH67ls1tCe_-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=5;startArrow=blockThin;startFill=1;" target="639XBa-bMxHbPkgE7c4O-24">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="469" y="142.19999712000026" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-52" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.975879;exitY=0.500012;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;startArrow=classic;startFill=1;fontSize=15;strokeWidth=5;" target="znKJy6GCWVH67ls1tCe_-1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="469" y="91.69000288000007" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-64" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.979866;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;strokeWidth=5;endArrow=block;endFill=1;startArrow=blockThin;startFill=1;" target="639XBa-bMxHbPkgE7c4O-24">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="717" y="287" />
-            </Array>
-            <mxPoint x="910" y="200" as="sourcePoint" />
-            <mxPoint x="880.2" y="340" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-54" parent="639XBa-bMxHbPkgE7c4O-20" style="dashed=0;outlineConnect=0;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;shape=mxgraph.weblogos.json_2;fillColor=default;points=[[0.020134,0.5,0,0,0],[0.068408,0.119048,0,0,0],[0.068408,1,0,0,1],[0.50995,0.119048,0,0,0],[0.50995,1,0,0,22],[0.926617,0.119048,0,0,0],[0.926617,1,0,0,1],[0.979866,0.5,0,0,0]];" value="POST/GET" vertex="1">
-          <mxGeometry height="40" width="130" x="410" y="267" as="geometry" />
-        </mxCell>
-        <mxCell id="znKJy6GCWVH67ls1tCe_-1" parent="639XBa-bMxHbPkgE7c4O-20" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/generic/1/HTTP.svg" value="" vertex="1">
-          <mxGeometry height="110" width="110" x="430" y="-163" as="geometry" />
-        </mxCell>
-        <mxCell id="znKJy6GCWVH67ls1tCe_-2" connectable="0" parent="639XBa-bMxHbPkgE7c4O-20" style="group" value="" vertex="1">
-          <mxGeometry height="246" width="246" x="594" y="-40" as="geometry" />
-        </mxCell>
-        <UserObject label="☁️ Zrok Cloud / Internet" mermaidId="n:☁️ Zrok Cloud / Internet" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="☁️ Zrok Cloud / Internet" id="639XBa-bMxHbPkgE7c4O-24">
-          <mxCell parent="znKJy6GCWVH67ls1tCe_-2" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=21;" vertex="1">
-            <mxGeometry height="246" width="246" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-61" parent="znKJy6GCWVH67ls1tCe_-2" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/integration/1/HTTPS_Adapter-137.svg;shadow=1;shadowColor=light-dark(#000000,#000000);" value="&lt;span style=&quot;font-family: &amp;quot;Trebuchet MS&amp;quot;, Verdana, Arial, sans-serif; font-size: 16px; white-space: normal;&quot;&gt;Zrok Network&lt;/span&gt;" vertex="1">
-          <mxGeometry height="137.5" width="176" x="30" y="45" as="geometry" />
-        </mxCell>
-        <mxCell id="znKJy6GCWVH67ls1tCe_-8" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="znKJy6GCWVH67ls1tCe_-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-41">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="znKJy6GCWVH67ls1tCe_-3" parent="639XBa-bMxHbPkgE7c4O-20" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;align=center;strokeColor=none;fillColor=#00BEF2;shape=mxgraph.azure.automation;pointerEvents=1;fontSize=15;" value="CONTROL" vertex="1">
-          <mxGeometry height="103.5" width="110" x="202" y="420" as="geometry" />
-        </mxCell>
-        <UserObject label="Zrok Client&#xa;(Túnel Seguro)" mermaidId="n:ZROK_CLIENT" mermaidBaseStyle="rhombus;html=1;strokeWidth=3;whiteSpace=wrap;fillColor=#a29bfe;strokeColor=#6c5ce7;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Zrok Client&#xa;(Túnel Seguro)" id="639XBa-bMxHbPkgE7c4O-33">
-          <mxCell parent="639XBa-bMxHbPkgE7c4O-20" style="rhombus;html=1;strokeWidth=3;whiteSpace=wrap;fillColor=#a29bfe;strokeColor=#6c5ce7;fontColor=light-dark(#FFFFFF,#FFFFFF);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
-            <mxGeometry height="184" width="184" x="1097.5" y="-10" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <mxCell id="znKJy6GCWVH67ls1tCe_-9" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=blockThin;endFill=1;startArrow=blockThin;startFill=1;entryX=0.020134;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=15;strokeWidth=5;" target="639XBa-bMxHbPkgE7c4O-54">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="400" y="330" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <UserObject label="Redirección local" mermaidId="e:ZROK_CLIENT-&gt;FRONTEND#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.11;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="Redirección local" id="639XBa-bMxHbPkgE7c4O-34">
-          <mxCell edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-33" style="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=26;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;exitDx=0;exitDy=0;" target="639XBa-bMxHbPkgE7c4O-28">
-            <mxGeometry relative="1" as="geometry" />
+            <mxGeometry height="73" width="201" x="200" y="530" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Túnel Encriptado" mermaidId="e:ZROK_CLOUD-&gt;ZROK_CLIENT#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="Túnel Encriptado" id="639XBa-bMxHbPkgE7c4O-38">
@@ -120,7 +29,7 @@
           </mxCell>
         </UserObject>
         <mxCell id="9JIEntzHgQPE8LqW7xyo-14" parent="639XBa-bMxHbPkgE7c4O-20" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.data_encryption_key;fillColor=#7D7C7C;gradientColor=none;" value="" vertex="1">
-          <mxGeometry height="110" width="100" x="900" y="28" as="geometry" />
+          <mxGeometry height="110" width="100" x="760" y="-30.72" as="geometry" />
         </mxCell>
         <mxCell id="9JIEntzHgQPE8LqW7xyo-15" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-24" style="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=12;startSize=12;strokeColor=light-dark(#333333,#33FF33);html=1;fontSize=20;labelBackgroundColor=default;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#66FF66);entryX=0;entryY=0.5;rounded=0;entryDx=0;entryDy=0;labelBorderColor=none;startFill=0;endFill=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="9JIEntzHgQPE8LqW7xyo-14" value="">
           <mxGeometry relative="1" x="-0.2253" y="-67" as="geometry">
@@ -130,6 +39,280 @@
             <mxPoint x="1098" y="82" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <UserObject label="🌐 Clientes Externos (Internet)" mermaidId="n:🌐 Clientes Externos (Internet)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🌐 Clientes Externos (Internet)" id="639XBa-bMxHbPkgE7c4O-21">
+          <mxCell parent="639XBa-bMxHbPkgE7c4O-20" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=bottom;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=25;rotation=-90;labelPosition=center;verticalLabelPosition=top;align=center;horizontal=1;" vertex="1">
+            <mxGeometry height="185.7636489288182" width="548.5714285714284" x="-30" y="-22.736696613683506" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-39" parent="639XBa-bMxHbPkgE7c4O-20" style="image;aspect=fixed;points=[[0.975,0.059242,0,0,0],[0.975,0.309087,0,0,0],[0.975,0.700598,0,0,0],[0.975,0.969091,0,0,0],[0.975879,0.500012,0,0,0]];align=center;fontSize=15;image=img/lib/azure2/app_services/App_Service_Domains.svg;labelBackgroundColor=none;" value="APLICATIVO WEB" vertex="1">
+          <mxGeometry height="104.98299930891498" width="129.79664409122321" x="161.99999999999997" y="-140" as="geometry" />
+        </mxCell>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-41" parent="639XBa-bMxHbPkgE7c4O-20" style="shape=image;verticalAlign=bottom;verticalLabelPosition=top;labelBackgroundColor=none;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/icon-cache1/Computer_Hardware_Cute_Style_vol_2-2891/processor__computer__microchip__cpu__chip__device__frequency-1244.svg;labelPosition=center;align=center;fontSize=20;horizontal=1;" value=" ESP32-S3&#xa;" vertex="1">
+          <mxGeometry height="92.4306841741534" width="92.4306841741534" x="234.6857142857143" y="95.6876295784381" as="geometry" />
+        </mxCell>
+        <mxCell id="znKJy6GCWVH67ls1tCe_-5" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;curved=1;" target="639XBa-bMxHbPkgE7c4O-41">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-44" parent="639XBa-bMxHbPkgE7c4O-20" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=16;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_thing_temperature_sensor;points=[[0.038462,0.278846,0,0,0],[0.038462,0.5,0,0,0],[0.038462,0.74359,0,0,0]];" value="TEMP. AIRE" vertex="1">
+          <mxGeometry height="44.5036627505183" width="44.5036627505183" x="162.00285714285715" y="219.91661368348298" as="geometry" />
+        </mxCell>
+        <mxCell id="znKJy6GCWVH67ls1tCe_-6" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-41">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-43" parent="639XBa-bMxHbPkgE7c4O-20" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=16;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_thing_temperature_humidity_sensor;points=[[0.038462,0.269231,0,0,0],[0.038462,0.5,0,0,0],[0.038462,0.730769,0,0,0],[0.5,0.961538,0,0,0]];" value=" " vertex="1">
+          <mxGeometry height="44.5036627505183" width="44.5036627505183" x="161.99742857142854" y="139.99910850034553" as="geometry" />
+        </mxCell>
+        <mxCell id="znKJy6GCWVH67ls1tCe_-7" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-41">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-42" parent="639XBa-bMxHbPkgE7c4O-20" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=16;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_thing_humidity_sensor;points=[[0.02561,0.388163,0,0,0],[0.025641,0.5,0,0,0],[0.025641,0.624103,0,0,0],[0.025641,0.739487,0,0,0],[0.025685,0.269206,0,0,0],[0.274217,0.961538,0,0,0],[0.384672,0.961496,0,0,0],[0.491453,0.961553,0,0,0],[0.602536,0.961538,0,0,0],[0.730057,0.96151,0,0,0],[0.961461,0.72667,0,0,0],[0.961525,0.499973,0,0,0],[0.961526,0.269195,0,0,0],[0.961546,0.388195,0,0,0],[0.961557,0.611377,0,0,0]];" value="HUMEDAD" vertex="1">
+          <mxGeometry height="44.5036627505183" width="44.5036627505183" x="155.14285714285714" y="45.76364892881821" as="geometry" />
+        </mxCell>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-57" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="znKJy6GCWVH67ls1tCe_-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=5;startArrow=blockThin;startFill=1;" target="639XBa-bMxHbPkgE7c4O-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="435.5999999999999" y="58.651000401382305" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-52" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.975879;exitY=0.500012;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=classic;endFill=1;startArrow=classic;startFill=1;fontSize=15;strokeWidth=5;" target="znKJy6GCWVH67ls1tCe_-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="435.5999999999999" y="29.329372784519705" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-64" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.979866;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;strokeWidth=5;endArrow=block;endFill=1;startArrow=blockThin;startFill=1;" target="639XBa-bMxHbPkgE7c4O-24">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="605.6571428571428" y="142.7090532135452" />
+            </Array>
+            <mxPoint x="737.9999999999999" y="92.20456116102278" as="sourcePoint" />
+            <mxPoint x="717.5657142857143" y="173.47615756738077" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-54" parent="639XBa-bMxHbPkgE7c4O-20" style="dashed=0;outlineConnect=0;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;shape=mxgraph.weblogos.json_2;fillColor=default;points=[[0.020134,0.5,0,0,0],[0.068408,0.119048,0,0,0],[0.068408,1,0,0,1],[0.50995,0.119048,0,0,0],[0.50995,1,0,0,22],[0.926617,0.119048,0,0,0],[0.926617,1,0,0,1],[0.979866,0.5,0,0,0]];" value="POST/GET" vertex="1">
+          <mxGeometry height="23.220456116102277" width="89.14285714285712" x="395.1428571428571" y="131.09882515549413" as="geometry" />
+        </mxCell>
+        <mxCell id="znKJy6GCWVH67ls1tCe_-1" parent="639XBa-bMxHbPkgE7c4O-20" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/generic/1/HTTP.svg" value="" vertex="1">
+          <mxGeometry height="62.76157567380787" width="62.76157567380787" x="408.8571428571428" y="-118.52107809260539" as="geometry" />
+        </mxCell>
+        <mxCell id="znKJy6GCWVH67ls1tCe_-2" connectable="0" parent="639XBa-bMxHbPkgE7c4O-20" style="group" value="" vertex="1">
+          <mxGeometry height="142.80580511402903" width="168.68571428571425" x="521.3142857142857" y="-47.11817553559089" as="geometry" />
+        </mxCell>
+        <UserObject label="☁️ Zrok Cloud / Internet" mermaidId="n:☁️ Zrok Cloud / Internet" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="☁️ Zrok Cloud / Internet" id="639XBa-bMxHbPkgE7c4O-24">
+          <mxCell parent="znKJy6GCWVH67ls1tCe_-2" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=21;" vertex="1">
+            <mxGeometry height="142.80580511402903" width="168.68571428571425" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="639XBa-bMxHbPkgE7c4O-61" parent="znKJy6GCWVH67ls1tCe_-2" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/integration/1/HTTPS_Adapter-137.svg;shadow=1;shadowColor=light-dark(#000000,#000000);" value="&lt;span style=&quot;font-family: &amp;quot;Trebuchet MS&amp;quot;, Verdana, Arial, sans-serif; font-size: 16px; white-space: normal;&quot;&gt;Zrok Network&lt;/span&gt;" vertex="1">
+          <mxGeometry height="78.45196959225984" width="100.41852107809258" x="20.571428571428566" y="26.123013130615064" as="geometry" />
+        </mxCell>
+        <mxCell id="znKJy6GCWVH67ls1tCe_-8" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="znKJy6GCWVH67ls1tCe_-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-41">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="znKJy6GCWVH67ls1tCe_-3" parent="639XBa-bMxHbPkgE7c4O-20" style="verticalLabelPosition=bottom;html=1;verticalAlign=top;align=center;strokeColor=none;fillColor=#00BEF2;shape=mxgraph.azure.automation;pointerEvents=1;fontSize=15;" value="CONTROL" vertex="1">
+          <mxGeometry height="60.082930200414644" width="75.42857142857143" x="252.51428571428568" y="219.9170697995853" as="geometry" />
+        </mxCell>
+        <mxCell id="znKJy6GCWVH67ls1tCe_-9" edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;endArrow=blockThin;endFill=1;startArrow=blockThin;startFill=1;entryX=0.020134;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=15;strokeWidth=5;" target="639XBa-bMxHbPkgE7c4O-54">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="388.2857142857143" y="167.67104353835515" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="Zrok Client&#xa;(Túnel Seguro)" mermaidId="n:ZROK_CLIENT" mermaidBaseStyle="rhombus;html=1;strokeWidth=3;whiteSpace=wrap;fillColor=#a29bfe;strokeColor=#6c5ce7;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Zrok Client&#xa;(Túnel Seguro)" id="639XBa-bMxHbPkgE7c4O-33">
+          <mxCell parent="639XBa-bMxHbPkgE7c4O-20" style="rhombus;html=1;strokeWidth=3;whiteSpace=wrap;fillColor=#a29bfe;strokeColor=#6c5ce7;fontColor=light-dark(#FFFFFF,#FFFFFF);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="184" width="184" x="980" y="-67.72" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Redirección local" mermaidId="e:ZROK_CLIENT-&gt;FRONTEND#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.11;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="Redirección local" id="639XBa-bMxHbPkgE7c4O-34">
+          <mxCell edge="1" parent="639XBa-bMxHbPkgE7c4O-20" source="639XBa-bMxHbPkgE7c4O-33" style="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=26;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.25;rounded=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-28">
+            <mxGeometry relative="1" x="-0.1741" y="-11" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="1072" y="330" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidData="{&#xa;  &quot;data&quot;: &quot;graph TD\n    %% Definición de Estilos Profesionales\n    classDef hardware fill:#2d3436,stroke:#0984e3,stroke-width:3px,color:#fff,rx:10,ry:10;\n    classDef cloud fill:#74b9ff,stroke:#0984e3,stroke-width:3px,color:#2d3436,rx:15,ry:15;\n    classDef dockerNode fill:#00b894,stroke:#00cec9,stroke-width:3px,color:#fff,rx:8,ry:8;\n    classDef dbNode fill:#fdcb6e,stroke:#e17055,stroke-width:3px,color:#2d3436,rx:8,ry:8;\n    classDef tunnel fill:#a29bfe,stroke:#6c5ce7,stroke-width:3px,color:#fff,rx:10,ry:10;\n    classDef dockerEngine fill:#0db7ed,stroke:#039be5,stroke-width:3px,color:#fff,rx:10,ry:10;\n\n    subgraph \&quot;🌐 Clientes Externos (Internet)\&quot;\n        ESP32[\&quot;fa:fa-microchip Microcontrolador ESP32-S3&lt;br/&gt;(Sensores y Relés)\&quot;]:::hardware\n        USUARIO[\&quot;fa:fa-laptop Usuario / Administrador&lt;br/&gt;(Navegador Web)\&quot;]:::hardware\n    end\n\n    subgraph \&quot;☁️ Zrok Cloud / Internet\&quot;\n        ZROK_CLOUD((\&quot;fa:fa-cloud Zrok Network&lt;br/&gt;(URL Pública HTTPS)\&quot;)):::cloud\n    end\n\n    subgraph \&quot;🐧 Servidor Local (Host Linux)\&quot;\n        direction TB\n        ZROK_CLIENT{\&quot;fa:fa-shield-alt Zrok Client&lt;br/&gt;(Túnel Seguro)\&quot;}:::tunnel\n        \n        subgraph \&quot;🐳 Ecosistema Docker Engine (Red Interna: 172.x.x.x)\&quot;\n            direction TB\n            DOCKER[\&quot;fa:fa-docker Docker Daemon / Compose&lt;br/&gt;(Orquestador de Microservicios)\&quot;]:::dockerEngine\n            \n            subgraph \&quot;Contenedores Aislados\&quot;\n                direction LR\n                FRONTEND[\&quot;fa:fa-cubes Contenedor Angular&lt;br/&gt;(Puerto 80)\&quot;]:::dockerNode\n                BACKEND[\&quot;fa:fa-cogs Contenedor Laravel&lt;br/&gt;(Puerto 8000)\&quot;]:::dockerNode\n                DB[(\&quot;fa:fa-database Contenedor MySQL&lt;br/&gt;(Puerto 3306)\&quot;)]:::dbNode\n                \n                FRONTEND -. \&quot;fa:fa-exchange-alt API REST\&quot; .-&gt; BACKEND\n                BACKEND &lt;== \&quot;fa:fa-server Lect/Escritura\&quot; ==&gt; DB\n            end\n            \n            %% Relación de gestión de Docker\n            DOCKER -.- FRONTEND\n            DOCKER -.- BACKEND\n            DOCKER -.- DB\n        end\n        \n        ZROK_CLIENT ===|\&quot;Redirección local\&quot;| FRONTEND\n        ZROK_CLIENT ===|\&quot;Redirección local\&quot;| BACKEND\n    end\n\n    %% Conexiones principales\n    ESP32 --&gt;|\&quot;POST/GET (JSON)\&quot;| ZROK_CLOUD\n    USUARIO --&gt;|\&quot;HTTPS\&quot;| ZROK_CLOUD\n    ZROK_CLOUD ===|\&quot;fa:fa-lock Túnel Encriptado\&quot;| ZROK_CLIENT\n&quot;,&#xa;  &quot;config&quot;: null&#xa;}" id="yyQdzHDvVUDKugctozcl-20">
+          <mxCell connectable="0" parent="1" style="group;transparentBounds=1;editIcon=1;lockedGroup=0;groupPadding=10;" vertex="1">
+            <mxGeometry height="905" width="2130" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="yyQdzHDvVUDKugctozcl-51" parent="yyQdzHDvVUDKugctozcl-20" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=light-dark(#000000,#007FFF);strokeWidth=2;dashed=1;dashPattern=8 8;" value="" vertex="1">
+          <mxGeometry height="830" width="710" x="1260" y="-190" as="geometry" />
+        </mxCell>
+        <UserObject label="🌐 Clientes Externos (Internet)" mermaidId="n:🌐 Clientes Externos (Internet)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🌐 Clientes Externos (Internet)" id="yyQdzHDvVUDKugctozcl-21">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-20" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="143" width="604" x="240" y="790" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Microcontrolador ESP32-S3&#xa;(Sensores y Relés)" mermaidId="n:ESP32" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#2d3436;strokeColor=#0984e3;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Microcontrolador ESP32-S3&#xa;(Sensores y Relés)" id="yyQdzHDvVUDKugctozcl-22">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-21" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#2d3436;strokeColor=#0984e3;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="258" x="311" y="45" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Usuario / Administrador&#xa;(Navegador Web)" mermaidId="n:USUARIO" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#2d3436;strokeColor=#0984e3;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Usuario / Administrador&#xa;(Navegador Web)" id="yyQdzHDvVUDKugctozcl-23">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-21" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#2d3436;strokeColor=#0984e3;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="226" x="35" y="45" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="☁️ Zrok Cloud / Internet" mermaidId="n:☁️ Zrok Cloud / Internet" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="☁️ Zrok Cloud / Internet" id="yyQdzHDvVUDKugctozcl-24">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-20" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="256" width="256" x="406" y="982" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Zrok Network&#xa;(URL Pública HTTPS)" mermaidId="n:ZROK_CLOUD" mermaidBaseStyle="ellipse;html=1;aspect=fixed;strokeWidth=3;whiteSpace=wrap;fillColor=#74b9ff;strokeColor=#0984e3;fontColor=#2d3436;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Zrok Network&#xa;(URL Pública HTTPS)" id="yyQdzHDvVUDKugctozcl-25">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-24" style="ellipse;html=1;aspect=fixed;strokeWidth=3;whiteSpace=wrap;fillColor=#74b9ff;strokeColor=#0984e3;fontColor=#2d3436;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="186" width="186" x="35" y="45" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="🐧 Servidor Local (Host Linux)" mermaidId="n:🐧 Servidor Local (Host Linux)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🐧 Servidor Local (Host Linux)" id="yyQdzHDvVUDKugctozcl-26">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-20" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="766" width="902" x="405" y="1312" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="🐳 Ecosistema Docker Engine (Red Interna: 172.x.x.x)" mermaidId="n:🐳 Ecosistema Docker Engine (Red Interna: 172.x.x.x)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🐳 Ecosistema Docker Engine (Red Interna: 172.x.x.x)" id="yyQdzHDvVUDKugctozcl-27">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-26" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="684" width="624" x="243" y="57" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Contenedores Aislados" mermaidId="n:Contenedores Aislados" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Contenedores Aislados" id="yyQdzHDvVUDKugctozcl-28">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-27" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="435" width="513" x="35" y="224" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Contenedor Angular&#xa;(Puerto 80)" mermaidId="n:FRONTEND" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Contenedor Angular&#xa;(Puerto 80)" id="yyQdzHDvVUDKugctozcl-29">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-28" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="202" x="35" y="45" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Contenedor Laravel&#xa;(Puerto 8000)" mermaidId="n:BACKEND" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Contenedor Laravel&#xa;(Puerto 8000)" id="yyQdzHDvVUDKugctozcl-30">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-28" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="201" x="197" y="187" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Contenedor MySQL&#xa;(Puerto 3306)" mermaidId="n:DB" mermaidBaseStyle="html=1;shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=3;whiteSpace=wrap;fillColor=#fdcb6e;strokeColor=#e17055;fontColor=#2d3436;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Contenedor MySQL&#xa;(Puerto 3306)" id="yyQdzHDvVUDKugctozcl-31">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-28" style="html=1;shape=cylinder3;boundedLbl=1;backgroundOutline=1;size=10;strokeWidth=3;whiteSpace=wrap;fillColor=#fdcb6e;strokeColor=#e17055;fontColor=#2d3436;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="81" width="156" x="322" y="329" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="API REST" mermaidId="e:FRONTEND-&gt;BACKEND#0" mermaidBaseStyle="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;" mermaidBaseValue="API REST" id="yyQdzHDvVUDKugctozcl-32">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-28" source="yyQdzHDvVUDKugctozcl-29" style="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;rounded=0;" target="yyQdzHDvVUDKugctozcl-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="572" y="720" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Lect/Escritura" mermaidId="e:BACKEND-&gt;DB#0" mermaidBaseStyle="curved=1;startArrow=block;startSize=7;endArrow=block;endSize=7;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;" mermaidBaseValue="Lect/Escritura" id="yyQdzHDvVUDKugctozcl-33">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-28" source="yyQdzHDvVUDKugctozcl-30" style="curved=1;startArrow=block;startSize=3;endArrow=block;endSize=3;strokeWidth=3.5;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;rounded=0;" target="yyQdzHDvVUDKugctozcl-31">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="734" y="862" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <mxCell id="yyQdzHDvVUDKugctozcl-50" connectable="0" parent="yyQdzHDvVUDKugctozcl-33" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;fontSize=12;fontColor=default;labelBackgroundColor=default;" value="Text" vertex="1">
+          <mxGeometry relative="1" x="0.6716" y="4" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="Zrok Client&#xa;(Túnel Seguro)" mermaidId="n:ZROK_CLIENT" mermaidBaseStyle="rhombus;html=1;strokeWidth=3;whiteSpace=wrap;fillColor=#a29bfe;strokeColor=#6c5ce7;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Zrok Client&#xa;(Túnel Seguro)" id="yyQdzHDvVUDKugctozcl-38">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-26" style="rhombus;html=1;strokeWidth=3;whiteSpace=wrap;fillColor=#a29bfe;strokeColor=#6c5ce7;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="187" width="187" x="35" y="45" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="Redirección local" mermaidId="e:ZROK_CLIENT-&gt;FRONTEND#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.73;entryX=1;entryY=0.78;" mermaidBaseValue="Redirección local" id="yyQdzHDvVUDKugctozcl-39">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-26" source="yyQdzHDvVUDKugctozcl-38" style="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.73;entryX=1;entryY=0.78;rounded=0;" target="yyQdzHDvVUDKugctozcl-29">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="414" y="267" />
+                <mxPoint x="414" y="301" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Redirección local" mermaidId="e:ZROK_CLIENT-&gt;BACKEND#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.63;entryX=1;entryY=0.78;" mermaidBaseValue="Redirección local" id="yyQdzHDvVUDKugctozcl-40">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-26" source="yyQdzHDvVUDKugctozcl-38" style="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.63;entryX=1;entryY=0.78;rounded=0;" target="yyQdzHDvVUDKugctozcl-30">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="611" y="267" />
+                <mxPoint x="611" y="301" />
+                <mxPoint x="611" y="363" />
+                <mxPoint x="611" y="434" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="POST/GET (JSON)" mermaidId="e:ESP32-&gt;ZROK_CLOUD#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.1;" mermaidBaseValue="POST/GET (JSON)" id="yyQdzHDvVUDKugctozcl-41">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="yyQdzHDvVUDKugctozcl-22" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=1;entryY=0.1;rounded=0;" target="yyQdzHDvVUDKugctozcl-25">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="680" y="933" />
+                <mxPoint x="680" y="968" />
+                <mxPoint x="680" y="1002" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="HTTPS" mermaidId="e:USUARIO-&gt;ZROK_CLOUD#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.1;" mermaidBaseValue="HTTPS" id="yyQdzHDvVUDKugctozcl-42">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="yyQdzHDvVUDKugctozcl-23" style="curved=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0;entryY=0.1;rounded=0;" target="yyQdzHDvVUDKugctozcl-25">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points">
+                <mxPoint x="388" y="933" />
+                <mxPoint x="388" y="968" />
+                <mxPoint x="388" y="1002" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Túnel Encriptado" mermaidId="e:ZROK_CLOUD-&gt;ZROK_CLIENT#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;" mermaidBaseValue="Túnel Encriptado" id="yyQdzHDvVUDKugctozcl-43">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="yyQdzHDvVUDKugctozcl-25" style="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;" target="yyQdzHDvVUDKugctozcl-38">
+            <mxGeometry relative="1" as="geometry">
+              <Array as="points" />
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="Docker Daemon / Compose&#xa;(Orquestador de Microservicios)" mermaidId="n:DOCKER" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#0db7ed;strokeColor=#039be5;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Docker Daemon / Compose&#xa;(Orquestador de Microservicios)" id="yyQdzHDvVUDKugctozcl-34">
+          <mxCell parent="yyQdzHDvVUDKugctozcl-20" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#0db7ed;strokeColor=#039be5;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
+            <mxGeometry height="73" width="288" x="1360" y="982" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:DOCKER-&gt;FRONTEND#0" mermaidBaseStyle="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=none;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;" mermaidBaseValue="" id="yyQdzHDvVUDKugctozcl-35">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="yyQdzHDvVUDKugctozcl-34" style="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=none;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;rounded=0;" target="yyQdzHDvVUDKugctozcl-29">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:DOCKER-&gt;BACKEND#0" mermaidBaseStyle="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=none;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;" mermaidBaseValue="" id="yyQdzHDvVUDKugctozcl-36">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="yyQdzHDvVUDKugctozcl-34" style="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=none;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;rounded=0;" target="yyQdzHDvVUDKugctozcl-30">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="" mermaidId="e:DOCKER-&gt;DB#0" mermaidBaseStyle="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=none;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;" mermaidBaseValue="" id="yyQdzHDvVUDKugctozcl-37">
+          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="yyQdzHDvVUDKugctozcl-34" style="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=none;strokeColor=light-dark(#333333,#cccccc);exitX=1;exitY=1;entryX=1;entryY=1;rounded=0;" target="yyQdzHDvVUDKugctozcl-31">
+            <mxGeometry relative="1" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="yyQdzHDvVUDKugctozcl-49" parent="yyQdzHDvVUDKugctozcl-20" style="text;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontColor=light-dark(#000000,#FFFFFF);" value="&lt;span style=&quot;font-family: &amp;quot;Trebuchet MS&amp;quot;, Verdana, Arial, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;🐳 Ecosistema Docker Engine (Red Interna: 172.x.x.x)&lt;/span&gt;" vertex="1">
+          <mxGeometry height="40" width="420" x="1405" y="-180" as="geometry" />
+        </mxCell>
+        <mxCell id="yyQdzHDvVUDKugctozcl-48" parent="yyQdzHDvVUDKugctozcl-20" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/azure/1/Docker.svg" value=" " vertex="1">
+          <mxGeometry height="100.61" width="120" x="1534" y="-130" as="geometry" />
+        </mxCell>
+        <UserObject label="Redirección local" mermaidId="e:ZROK_CLIENT-&gt;BACKEND#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.89;exitY=1;entryX=0.76;entryY=0;" mermaidBaseValue="Redirección local" id="639XBa-bMxHbPkgE7c4O-35">
+          <mxCell edge="1" parent="1" source="639XBa-bMxHbPkgE7c4O-33" style="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=27;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0;entryY=0.25;rounded=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-29">
+            <mxGeometry relative="1" x="-0.3575" y="13" as="geometry">
+              <mxPoint as="offset" />
+              <Array as="points">
+                <mxPoint x="1390" y="230" />
+              </Array>
+            </mxGeometry>
+          </mxCell>
+        </UserObject>
+        <UserObject label="🐳 GOOLESHEETS" mermaidId="n:🐳 Ecosistema Docker (Red Interna: 172.x.x.x)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🐳 Ecosistema Docker (Red Interna: 172.x.x.x)" id="9JIEntzHgQPE8LqW7xyo-5">
+          <mxCell parent="1" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=20;" vertex="1">
+            <mxGeometry height="184" width="369" x="1750" y="-130" as="geometry" />
+          </mxCell>
+        </UserObject>
         <UserObject label="🐳 Ecosistema Docker (Red Interna: 172.x.x.x)" mermaidId="n:🐳 Ecosistema Docker (Red Interna: 172.x.x.x)" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="🐳 Ecosistema Docker (Red Interna: 172.x.x.x)" id="639XBa-bMxHbPkgE7c4O-27">
           <mxCell parent="1" style="html=1;whiteSpace=wrap;strokeWidth=1;verticalAlign=top;fillColor=light-dark(#ffffde,#1f2020);strokeColor=light-dark(#aaaa33,#cccccc);fontColor=light-dark(#333333,#cccccc);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" vertex="1">
             <mxGeometry height="532.25" width="369" x="1520" y="73.75" as="geometry" />
@@ -152,18 +335,10 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <UserObject label="Redirección local" mermaidId="e:ZROK_CLIENT-&gt;BACKEND#0" mermaidBaseStyle="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.89;exitY=1;entryX=0.76;entryY=0;" mermaidBaseValue="Redirección local" id="639XBa-bMxHbPkgE7c4O-35">
-          <mxCell edge="1" parent="1" source="639XBa-bMxHbPkgE7c4O-33" style="curved=1;startArrow=none;endArrow=none;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=27;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=1;exitY=0.5;entryX=0;entryY=0.25;rounded=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-29">
-            <mxGeometry relative="1" as="geometry">
-              <Array as="points">
-                <mxPoint x="1390" y="230" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
         <UserObject label="API REST" mermaidId="e:FRONTEND-&gt;BACKEND#0" mermaidBaseStyle="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.68;exitY=1;entryX=0.42;entryY=1;" mermaidBaseValue="API REST" id="639XBa-bMxHbPkgE7c4O-31">
           <mxCell edge="1" parent="1" source="639XBa-bMxHbPkgE7c4O-28" style="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.75;exitY=1;entryX=0.25;entryY=1;rounded=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-29">
-            <mxGeometry relative="1" as="geometry">
+            <mxGeometry relative="1" x="-0.3013" y="44" as="geometry">
+              <mxPoint as="offset" />
               <Array as="points">
                 <mxPoint x="1611" y="678" />
               </Array>
