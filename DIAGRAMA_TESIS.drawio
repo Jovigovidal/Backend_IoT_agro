@@ -54,11 +54,8 @@
             </mxGeometry>
           </mxCell>
         </UserObject>
-        <mxCell id="59ACcva5zGTn-IDEc6KZ-35" edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="59ACcva5zGTn-IDEc6KZ-31" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=1 2;endArrow=none;endFill=0;" target="yyQdzHDvVUDKugctozcl-48">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="yyQdzHDvVUDKugctozcl-48" parent="yyQdzHDvVUDKugctozcl-20" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/azure/1/Docker.svg" value=" " vertex="1">
-          <mxGeometry height="120" width="143.13" x="1480" y="-20" as="geometry" />
+          <mxGeometry height="120" width="143.13" x="1460" y="10" as="geometry" />
         </mxCell>
         <mxCell id="59ACcva5zGTn-IDEc6KZ-31" parent="yyQdzHDvVUDKugctozcl-20" style="shape=image;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=none;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/azure/1/SQL_Database.svg;fontColor=light-dark(#000000,#FFFFFF);" value="Contenedor MySQL&#xa;(Puerto 3306)" vertex="1">
           <mxGeometry height="104.98" width="81.21" x="1750" y="410" as="geometry" />
