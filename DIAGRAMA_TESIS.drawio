@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Página-1" id="ndtd5C9YTLjhfyiebEe6">
-    <mxGraphModel dx="2357" dy="2407" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" adaptiveColors="auto">
+    <mxGraphModel dx="1938" dy="2167" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" adaptiveColors="auto">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -139,8 +139,12 @@
         <mxCell id="639XBa-bMxHbPkgE7c4O-42" parent="1" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_thing_humidity_sensor;points=[[0.02561,0.388163,0,0,0],[0.025641,0.5,0,0,0],[0.025641,0.624103,0,0,0],[0.025641,0.739487,0,0,0],[0.025685,0.269206,0,0,0],[0.274217,0.961538,0,0,0],[0.384672,0.961496,0,0,0],[0.491453,0.961553,0,0,0],[0.602536,0.961538,0,0,0],[0.730057,0.96151,0,0,0],[0.961461,0.72667,0,0,0],[0.961525,0.499973,0,0,0],[0.961526,0.269195,0,0,0],[0.961546,0.388195,0,0,0],[0.961557,0.611377,0,0,0]];" value="HUMEDAD" vertex="1">
           <mxGeometry height="44.5036627505183" width="44.5036627505183" x="183.74285714285713" y="35.903648928818214" as="geometry" />
         </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-57" edge="1" parent="1" source="znKJy6GCWVH67ls1tCe_-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=3;startArrow=none;startFill=0;" target="639XBa-bMxHbPkgE7c4O-28">
+        <mxCell id="639XBa-bMxHbPkgE7c4O-57" edge="1" parent="1" source="znKJy6GCWVH67ls1tCe_-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=4;startArrow=none;startFill=0;" target="639XBa-bMxHbPkgE7c4O-29">
           <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="900" y="176.54" />
+              <mxPoint x="900" y="279.15" />
+            </Array>
             <mxPoint x="464.19999999999993" y="48.791000401382306" as="sourcePoint" />
           </mxGeometry>
         </mxCell>
