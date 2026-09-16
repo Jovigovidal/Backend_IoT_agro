@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net">
   <diagram name="Página-1" id="ndtd5C9YTLjhfyiebEe6">
-    <mxGraphModel dx="1938" dy="2167" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" adaptiveColors="auto">
+    <mxGraphModel dx="1400" dy="1898" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0" adaptiveColors="auto">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -20,30 +20,9 @@
         <mxCell id="yyQdzHDvVUDKugctozcl-49" parent="yyQdzHDvVUDKugctozcl-20" style="text;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontColor=light-dark(#000000,#FFFFFF);" value="&lt;span style=&quot;font-family: &amp;quot;Trebuchet MS&amp;quot;, Verdana, Arial, sans-serif; font-size: 16px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;&quot;&gt;🐳 Ecosistema Docker Engine (Red Interna: 172.x.x.x)&lt;/span&gt;" vertex="1">
           <mxGeometry height="40" width="420" x="1322.63" y="-60" as="geometry" />
         </mxCell>
-        <mxCell id="59ACcva5zGTn-IDEc6KZ-32" edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="639XBa-bMxHbPkgE7c4O-28" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=1 4;endArrow=none;endFill=0;" target="yyQdzHDvVUDKugctozcl-48">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <UserObject label="Contenedor Angular&#xa;(Puerto 80)" mermaidId="n:FRONTEND" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Contenedor Angular&#xa;(Puerto 80)" id="639XBa-bMxHbPkgE7c4O-28">
+        <UserObject label="&lt;span style=&quot;font-weight: 400;&quot;&gt;Servidor Laravel&lt;/span&gt;&lt;br style=&quot;font-weight: 400;&quot;&gt;&lt;span style=&quot;font-weight: 400;&quot;&gt;(API REST + Frontend Angular Compilado)&lt;/span&gt;&lt;br style=&quot;font-weight: 400;&quot;&gt;&lt;span style=&quot;font-weight: 400;&quot;&gt;Puerto 8000&lt;/span&gt;" mermaidId="n:BACKEND" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Contenedor Laravel&#xa;(Puerto 8000)" id="639XBa-bMxHbPkgE7c4O-29">
           <mxCell parent="yyQdzHDvVUDKugctozcl-20" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;fontStyle=1" vertex="1">
-            <mxGeometry height="92.43" width="214.46" x="1330" y="340" as="geometry" />
-          </mxCell>
-        </UserObject>
-        <UserObject label="API REST" mermaidId="e:FRONTEND-&gt;BACKEND#0" mermaidBaseStyle="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.68;exitY=1;entryX=0.42;entryY=1;" mermaidBaseValue="API REST" id="639XBa-bMxHbPkgE7c4O-31">
-          <mxCell edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="639XBa-bMxHbPkgE7c4O-28" style="curved=1;dashed=1;dashPattern=2 3;fixDash=1;startArrow=none;endArrow=block;endSize=7;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=28;labelBackgroundColor=light-dark(#FFFFFF,#000033);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#66CC00);exitX=0.75;exitY=1;entryX=0.25;entryY=1;rounded=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;fontStyle=3" target="639XBa-bMxHbPkgE7c4O-29">
-            <mxGeometry relative="1" x="0.2039" y="-3" as="geometry">
-              <mxPoint y="1" as="offset" />
-              <Array as="points">
-                <mxPoint x="1581" y="658" />
-              </Array>
-            </mxGeometry>
-          </mxCell>
-        </UserObject>
-        <mxCell id="59ACcva5zGTn-IDEc6KZ-33" edge="1" parent="yyQdzHDvVUDKugctozcl-20" source="639XBa-bMxHbPkgE7c4O-29" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=1 2;endArrow=none;endFill=0;" target="yyQdzHDvVUDKugctozcl-48">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <UserObject label="Contenedor Laravel&#xa;(Puerto 8000)" mermaidId="n:BACKEND" mermaidBaseStyle="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;" mermaidBaseValue="Contenedor Laravel&#xa;(Puerto 8000)" id="639XBa-bMxHbPkgE7c4O-29">
-          <mxCell parent="yyQdzHDvVUDKugctozcl-20" style="html=1;whiteSpace=wrap;strokeWidth=3;fillColor=#00b894;strokeColor=#00cec9;fontColor=#fff;fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontSize=16;fontStyle=1" vertex="1">
-            <mxGeometry height="78.45" width="185.76" x="1556.87" y="240" as="geometry" />
+            <mxGeometry height="92.43" width="280" x="1520" y="240" as="geometry" />
           </mxCell>
         </UserObject>
         <UserObject label="Lectura/Escritura" mermaidId="e:BACKEND-&gt;DB#0" mermaidBaseStyle="curved=1;startArrow=block;startSize=7;endArrow=block;endSize=7;strokeWidth=3.5;endSize=3;startSize=3;strokeColor=light-dark(#333333,#cccccc);html=1;fontSize=16;labelBackgroundColor=light-dark(#E8E8E88D,#2a2a2a8D);fontFamily=Trebuchet MS,Verdana,Arial,sans-serif;fontColor=light-dark(#333333,#cccccc);exitX=0.68;exitY=1;entryX=0.73;entryY=1;" mermaidBaseValue="Lectura/Escritura" id="639XBa-bMxHbPkgE7c4O-32">
@@ -55,7 +34,7 @@
           </mxCell>
         </UserObject>
         <mxCell id="yyQdzHDvVUDKugctozcl-48" parent="yyQdzHDvVUDKugctozcl-20" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/azure/1/Docker.svg" value=" " vertex="1">
-          <mxGeometry height="120" width="143.13" x="1460" y="10" as="geometry" />
+          <mxGeometry height="120" width="143.13" x="1461.07" as="geometry" />
         </mxCell>
         <mxCell id="59ACcva5zGTn-IDEc6KZ-31" parent="yyQdzHDvVUDKugctozcl-20" style="shape=image;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=none;imageAspect=0;aspect=fixed;image=https://icons.diagrams.net/assets/azure/1/SQL_Database.svg;fontColor=light-dark(#000000,#FFFFFF);" value="Contenedor MySQL&#xa;(Puerto 3306)" vertex="1">
           <mxGeometry height="104.98" width="81.21" x="1750" y="410" as="geometry" />
@@ -139,11 +118,11 @@
         <mxCell id="639XBa-bMxHbPkgE7c4O-42" parent="1" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#7AA116;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=10;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.iot_thing_humidity_sensor;points=[[0.02561,0.388163,0,0,0],[0.025641,0.5,0,0,0],[0.025641,0.624103,0,0,0],[0.025641,0.739487,0,0,0],[0.025685,0.269206,0,0,0],[0.274217,0.961538,0,0,0],[0.384672,0.961496,0,0,0],[0.491453,0.961553,0,0,0],[0.602536,0.961538,0,0,0],[0.730057,0.96151,0,0,0],[0.961461,0.72667,0,0,0],[0.961525,0.499973,0,0,0],[0.961526,0.269195,0,0,0],[0.961546,0.388195,0,0,0],[0.961557,0.611377,0,0,0]];" value="HUMEDAD" vertex="1">
           <mxGeometry height="44.5036627505183" width="44.5036627505183" x="183.74285714285713" y="35.903648928818214" as="geometry" />
         </mxCell>
-        <mxCell id="639XBa-bMxHbPkgE7c4O-57" edge="1" parent="1" source="znKJy6GCWVH67ls1tCe_-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=4;startArrow=none;startFill=0;" target="639XBa-bMxHbPkgE7c4O-29">
+        <mxCell id="639XBa-bMxHbPkgE7c4O-57" edge="1" parent="1" source="znKJy6GCWVH67ls1tCe_-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeWidth=4;startArrow=none;startFill=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="639XBa-bMxHbPkgE7c4O-29">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="900" y="176.54" />
-              <mxPoint x="900" y="279.15" />
+              <mxPoint x="910" y="176.5" />
+              <mxPoint x="910" y="286.2" />
             </Array>
             <mxPoint x="464.19999999999993" y="48.791000401382306" as="sourcePoint" />
           </mxGeometry>
