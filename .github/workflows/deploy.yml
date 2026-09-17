@@ -16,6 +16,7 @@ jobs:
           clean: true # Esto fuerza a Git a purgar los archivos que lanzan "unable to unlink" con permisos elevados
 
            # Actualizar dependencias y optimizar Laravel
+           # Actualizar dependencias y optimizar Laravel
       - name: Actualizar dependencias y optimizar Laravel
         env:
           CACHE_STORE: array
@@ -23,13 +24,14 @@ jobs:
         run: |
           cd backend
           
-          # 1. Asegurar que la carpeta exista físicamente en producción
-          mkdir -p bootstrap/cache
-          mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache
+          # 1. Forzar la creación de los directorios vitales usando privilegios elevados
+          sudo mkdir -p bootstrap/cache
+          sudo mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache storage/logs
           
-          # 2. Otorgar permisos de escritura al runner local
-          chmod -R 775 bootstrap/cache storage
+          # 2. Otorgar de forma forzada la propiedad al usuario del runner y permisos totales de escritura
+          sudo chown -R jovi_go:www-data bootstrap/cache storage
+          sudo chmod -R 775 bootstrap/cache storage
           
-          # 3. Ejecutar la instalación limpia
+          # 3. Ejecutar la instalación limpia con el usuario del runner
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan optimize:clear
