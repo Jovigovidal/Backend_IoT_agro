@@ -22,14 +22,19 @@ jobs:
           CACHE_STORE: array
           CACHE_DRIVER: array
         run: |
-          mkdir -p bootstrap/cache
+          set -euo pipefail
+
           mkdir -p \
+            bootstrap/cache \
             storage/framework/cache/data \
             storage/framework/sessions \
             storage/framework/views \
             storage/logs
 
-          chmod -R u+rwX,g+rwX bootstrap/cache storage
+          # Cambiar permisos únicamente de directorios.
+          # No modificar recursivamente archivos de storage.
+          chmod u+rwx,g+rwx bootstrap/cache
+          find storage -type d -exec chmod ug+rwx {} \;
 
           composer install \
             --no-interaction \
@@ -56,18 +61,17 @@ jobs:
 
           cd "$TARGET"
 
-          mkdir -p bootstrap/cache
           mkdir -p \
+            bootstrap/cache \
             storage/framework/cache/data \
             storage/framework/sessions \
             storage/framework/views \
             storage/logs
 
-          chmod -R u+rwX,g+rwX bootstrap/cache storage
+          chmod u+rwx,g+rwx bootstrap/cache
+          find storage -type d -exec chmod ug+rwx {} \;
 
           php artisan optimize:clear
 
-          git rev-parse HEAD
-
-          composer install --no-interaction --prefer-dist --optimize-autoloader
-          php artisan optimize:clear
+          echo "Commit desplegado:"
+          git -C "$GITHUB_WORKSPACE" rev-parse HEAD
