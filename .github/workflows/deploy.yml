@@ -10,27 +10,64 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Sincronizar codigo nuevo
+      - name: Sincronizar código
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           clean: true
 
-      - name: Actualizar dependencias y optimizar Laravel
+      - name: Preparar Laravel
+        working-directory: backend
         env:
           CACHE_STORE: array
           CACHE_DRIVER: array
         run: |
-          set -euo pipefail
-          cd backend
-
+          mkdir -p bootstrap/cache
           mkdir -p \
-            bootstrap/cache \
+            storage/framework/cache/data \
             storage/framework/sessions \
             storage/framework/views \
-            storage/framework/cache \
             storage/logs
 
-          chmod -R ug+rwX bootstrap/cache storage
+          chmod -R u+rwX,g+rwX bootstrap/cache storage
+
+          composer install \
+            --no-interaction \
+            --prefer-dist \
+            --optimize-autoloader
+
+          php artisan optimize:clear
+
+      - name: Publicar backend en producción
+        run: |
+          set -euo pipefail
+
+          SOURCE="$GITHUB_WORKSPACE/backend"
+          TARGET="/home/jovi_go/Escritorio/IOT_BACKEND-APP/Backend_IoT_agro/backend"
+
+          test -d "$SOURCE"
+          test -d "$TARGET"
+
+          rsync -a --delete \
+            --exclude='.env' \
+            --exclude='storage/' \
+            --exclude='bootstrap/cache/' \
+            "$SOURCE/" "$TARGET/"
+
+          cd "$TARGET"
+
+          mkdir -p bootstrap/cache
+          mkdir -p \
+            storage/framework/cache/data \
+            storage/framework/sessions \
+            storage/framework/views \
+            storage/logs
+
+          chmod -R u+rwX,g+rwX bootstrap/cache storage
+
+          php artisan optimize:clear
+
+          git rev-parse HEAD
 
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan optimize:clear
