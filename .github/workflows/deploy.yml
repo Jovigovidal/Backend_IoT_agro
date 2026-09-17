@@ -10,19 +10,26 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # 1. Usar la acción oficial con limpieza forzada para solucionar los permisos denegados
       - name: Sincronizar codigo nuevo
         uses: actions/checkout@v4
         with:
-          clean: true # Esto elimina de raíz cualquier archivo local conflictivo
+          clean: true # Esto fuerza a Git a purgar los archivos que lanzan "unable to unlink" con permisos elevados
 
-      # 2. Actualizar dependencias y optimizar Laravel
+           # Actualizar dependencias y optimizar Laravel
       - name: Actualizar dependencias y optimizar Laravel
         env:
           CACHE_STORE: array
           CACHE_DRIVER: array
         run: |
-          # Accedemos a la carpeta interna de tu repositorio donde se encuentra Laravel
           cd backend
+          
+          # 1. Asegurar que la carpeta exista físicamente en producción
+          mkdir -p bootstrap/cache
+          mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache
+          
+          # 2. Otorgar permisos de escritura al runner local
+          chmod -R 775 bootstrap/cache storage
+          
+          # 3. Ejecutar la instalación limpia
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan optimize:clear
