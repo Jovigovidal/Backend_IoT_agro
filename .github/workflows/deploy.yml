@@ -10,13 +10,13 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Sincronizar código
+      - name: Descargar código desde GitHub
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
           clean: true
 
-      - name: Preparar Laravel
+      - name: Preparar dependencias
         working-directory: backend
         env:
           CACHE_STORE: array
@@ -31,27 +31,24 @@ jobs:
             storage/framework/views \
             storage/logs
 
-          # Cambiar permisos únicamente de directorios.
-          # No modificar recursivamente archivos de storage.
           chmod u+rwx,g+rwx bootstrap/cache
           find storage -type d -exec chmod ug+rwx {} \;
 
           composer install \
             --no-interaction \
             --prefer-dist \
-            --optimize-autoloader
+            --optimize-autoloader \
+            --no-dev
 
-          php artisan optimize:clear
-
-      - name: Publicar backend en producción
+      - name: Publicar código en producción
         run: |
           set -euo pipefail
 
           SOURCE="$GITHUB_WORKSPACE/backend"
           TARGET="/home/jovi_go/Escritorio/IOT_BACKEND-APP/Backend_IoT_agro/backend"
 
-          test -d "$SOURCE"
-          test -d "$TARGET"
+          test -f "$SOURCE/artisan"
+          test -f "$TARGET/artisan"
 
           rsync -a --delete \
             --exclude='.env' \
@@ -71,7 +68,15 @@ jobs:
           chmod u+rwx,g+rwx bootstrap/cache
           find storage -type d -exec chmod ug+rwx {} \;
 
-          php artisan optimize:clear
+          # Limpia configuración sin usar la caché de base de datos.
+          php artisan config:clear
+
+          # Ejecuta migraciones contra la base definida en el .env del servidor.
+          php artisan migrate --force
+
+          # Usa temporalmente la caché en memoria para evitar un fallo
+          # si la tabla cache todavía no existe.
+          CACHE_STORE=array php artisan optimize:clear
 
           echo "Commit desplegado:"
           git -C "$GITHUB_WORKSPACE" rev-parse HEAD
