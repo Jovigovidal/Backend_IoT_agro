@@ -136,6 +136,15 @@ class AcuarioController extends Controller
             $estado->box_hum  = $request->input('box_hum', 0);
             $estado->save();
 
+            // 🔄 LÓGICA OTA: Captura y Reseteo de la bandera
+            $actualizarOTA = (bool) ($estado->actualizar_firmware ?? false);
+
+            // ANTI-BUCLE: Si está en true, lo regresamos a false en la BD para evitar reinicios infinitos
+            if ($actualizarOTA) {
+                $estado->actualizar_firmware = false;
+                $estado->save();
+            }
+
             return response()->json([
                 'modo' => $estado->modo,
                 'r1' => (bool)$estado->r1,
@@ -143,7 +152,8 @@ class AcuarioController extends Controller
                 'r3' => (bool)$estado->r3,
                 'r4' => (bool)$estado->r4,
                 'r1_en' => (bool)$estado->r1_en,
-                'fan_cmd' => (int)$estado->fan_cmd
+                'fan_cmd' => (int)$estado->fan_cmd,
+                'actualizar_firmware' => $actualizarOTA
             ]);
         } catch (\Exception $e) {
             Log::error("Error en AcuarioController: " . $e->getMessage());
@@ -167,6 +177,10 @@ class AcuarioController extends Controller
 
         if ($request->has('modo')) {
             $estado->modo = $request->modo;
+        }
+        // 🔄 NUEVO: Escuchar la orden de Angular para iniciar OTA
+        if ($request->has('actualizar_firmware')) {
+            $estado->actualizar_firmware = filter_var($request->input('actualizar_firmware'), FILTER_VALIDATE_BOOLEAN);
         }
 
         foreach (['r1', 'r2', 'r3', 'r4'] as $r) {
@@ -196,3 +210,4 @@ class AcuarioController extends Controller
 }
 
 //actualizacion_flexible -> reg_lecturas
+//actualizacion_flexible -> update_firmware

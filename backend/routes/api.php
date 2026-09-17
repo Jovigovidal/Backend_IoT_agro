@@ -24,3 +24,22 @@ Route::post('/control', [AcuarioController::class, 'updateState']);
 // 5. BITÁCORA (Opcional)
 Route::post('/bitacora', [BitacoraController::class, 'store']);
 Route::get('/bitacora', [BitacoraController::class, 'index']);
+
+// 5. BITÁCORA (Opcional)
+Route::post('/bitacora', [BitacoraController::class, 'store']);
+Route::get('/bitacora', [BitacoraController::class, 'index']);
+
+// =============================================================
+// 6. OTA FIRMWARE (GET) - Descarga del código compilado
+// ESP32: http.update(client, '/api/firmware/latest.bin')
+// =============================================================
+Route::get('/firmware/latest.bin', function () {
+    // Buscamos el archivo en la carpeta storage/app/public/
+    $path = storage_path('app/public/firmware.bin');
+    
+    if (!file_exists($path)) {
+        return response()->json(['error' => 'No hay firmware disponible para descargar.'], 404);
+    }
+    
+    return response()->download($path);
+});
