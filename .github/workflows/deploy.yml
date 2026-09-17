@@ -8,20 +8,21 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+
     steps:
+      # 1. Usar la acción oficial con limpieza forzada para solucionar los permisos denegados
       - name: Sincronizar codigo nuevo
-        run: |
-          # 1. Entramos a la raíz del repositorio para descargar los cambios
-          cd /home/jovi_go/Escritorio/IOT_BACKEND-APP/Backend_IoT_agro
-          git reset --hard
-          git pull origin main
-          
+        uses: actions/checkout@v4
+        with:
+          clean: true # Esto elimina de raíz cualquier archivo local conflictivo
+
+      # 2. Actualizar dependencias y optimizar Laravel
       - name: Actualizar dependencias y optimizar Laravel
         env:
           CACHE_STORE: array
           CACHE_DRIVER: array
         run: |
-          # 2. Entramos a la carpeta de Laravel para ejecutar los comandos de PHP
-          cd /home/jovi_go/Escritorio/IOT_BACKEND-APP/Backend_IoT_agro/backend
+          # Accedemos a la carpeta interna de tu repositorio donde se encuentra Laravel
+          cd backend
           composer install --no-interaction --prefer-dist --optimize-autoloader
           php artisan optimize:clear
